@@ -1,0 +1,38 @@
+[
+  {
+    "fieldName": "firstName",
+    "fieldLabel": "First Name",
+    "fieldType": "textbox",
+    "position": [
+      1,
+      1
+    ]
+  },
+  {
+    "fieldName": "lastName",
+    "fieldLabel": "Last Name",
+    "fieldType": "textbox",
+    "position": [
+      1,
+      2
+    ]
+  },
+  {
+    "fieldName": "date",
+    "fieldLabel": "Date",
+    "fieldType": "date-input",
+    "position": [
+      2,
+      1
+    ]
+  },
+  {
+    "fieldName": "address",
+    "fieldLabel": "Address",
+    "fieldType": "textbox",
+    "position": [
+      3,
+      1
+    ]
+  }
+]

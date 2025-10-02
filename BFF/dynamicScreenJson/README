@@ -1,0 +1,7 @@
+To run this application:
+* JDK: 17
+* Main class: DynamicScreenApplication
+
+Using the application:
+* Call the endpoint like this: http://localhost:8080/screen?filename=template1
+* The filenames available are the one in the resources/screen folder

@@ -1,0 +1,41 @@
+[
+  {
+    "fieldName": "firstName",
+    "fieldLabel": "First Name",
+    "fieldType": "textbox",
+    "position": [
+      1,
+      1
+    ]
+  },
+  {
+    "fieldName": "lastName",
+    "fieldLabel": "Last Name",
+    "fieldType": "textbox",
+    "position": [
+      2,
+      1
+    ]
+  },
+  {
+    "fieldName": "isAdmin",
+    "fieldLabel": "Admin",
+    "fieldType": "checkbox",
+    "position": [
+      3,
+      1
+    ]
+  },
+  {
+    "fieldName": "notificationType",
+    "fieldLabel": "Notify by",
+    "fieldType": "radio",
+    "position": [
+      4,
+      1
+    ],
+    "options": [
+      "email", "sms", "letter"
+    ]
+  }
+]
