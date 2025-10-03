@@ -25,5 +25,15 @@
       3,
       1
     ]
+  },
+  {
+    "fieldName": "createDealButton",
+    "fieldLabel": "Save",
+    "fieldType": "button",
+    "position": [
+      7,
+      1
+    ],
+    "function": "/deal/save"
   }
 ]

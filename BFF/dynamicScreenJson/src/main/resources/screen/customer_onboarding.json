@@ -66,5 +66,15 @@
       "sms",
       "letter"
     ]
+  },
+  {
+    "fieldName": "createCustomerButton",
+    "fieldLabel": "Save",
+    "fieldType": "button",
+    "position": [
+      7,
+      1
+    ],
+    "function": "/customer/save"
   }
 ]

@@ -40,5 +40,15 @@
       "edit-deal",
       "view-deal"
     ]
+  },
+  {
+    "fieldName": "createUserButton",
+    "fieldLabel": "Save",
+    "fieldType": "button",
+    "position": [
+      7,
+      1
+    ],
+    "function": "/user/save"
   }
 ]
