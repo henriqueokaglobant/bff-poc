@@ -1,0 +1,29 @@
+[
+  {
+    "fieldName": "dealId",
+    "fieldLabel": "Deal ID",
+    "fieldType": "textbox",
+    "position": [
+      1,
+      1
+    ]
+  },
+  {
+    "fieldName": "company",
+    "fieldLabel": "Company",
+    "fieldType": "textbox",
+    "position": [
+      2,
+      1
+    ]
+  },
+  {
+    "fieldName": "value",
+    "fieldLabel": "Value",
+    "fieldType": "numberfield",
+    "position": [
+      3,
+      1
+    ]
+  }
+]

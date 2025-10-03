@@ -18,21 +18,27 @@
     ]
   },
   {
-    "fieldName": "date",
-    "fieldLabel": "Date",
-    "fieldType": "date-input",
+    "fieldName": "isAdmin",
+    "fieldLabel": "Admin",
+    "fieldType": "checkbox",
     "position": [
       2,
       1
     ]
   },
   {
-    "fieldName": "address",
-    "fieldLabel": "Address",
-    "fieldType": "textbox",
+    "fieldName": "permissions",
+    "fieldLabel": "Permissions",
+    "fieldType": "multiple-select",
     "position": [
       3,
       1
+    ],
+    "options": [
+      "edit-customer",
+      "view-customer",
+      "edit-deal",
+      "view-deal"
     ]
   }
 ]

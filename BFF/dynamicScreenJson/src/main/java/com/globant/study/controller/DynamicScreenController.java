@@ -23,12 +23,12 @@ public class DynamicScreenController {
     public final Logger LOGGER = Logger.getLogger(getClass().getName());
 
     @GetMapping("/screen")
-    public ResponseEntity<String> getScreenJson(@RequestParam String filename) {
+    public ResponseEntity<String> getScreenJson(@RequestParam String template) {
         String responseBody = "";
         HttpStatus responseStatus = HttpStatus.OK;
 
         try {
-            File file = ResourceUtils.getFile("classpath:screen/" + filename + ".json");
+            File file = ResourceUtils.getFile("classpath:screen/" + template + ".json");
             InputStream in = new FileInputStream(file);
             responseBody = new String(in.readAllBytes(), StandardCharsets.UTF_8);
         } catch (IOException e) {
