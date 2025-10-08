@@ -1,0 +1,81 @@
+[
+  {
+    "fieldName": "firstName",
+    "fieldLabel": "First Name",
+    "fieldType": "textbox",
+    "position": [
+      1,
+      1
+    ]
+  },
+  {
+    "fieldName": "lastName",
+    "fieldLabel": "Last Name",
+    "fieldType": "textbox",
+    "position": [
+      1,
+      2
+    ]
+  },
+  {
+    "fieldName": "document",
+    "fieldLabel": "Document",
+    "fieldType": "textbox",
+    "position": [
+      1,
+      2
+    ]
+  },
+  {
+    "fieldName": "licenseNumber",
+    "fieldLabel": "License Number",
+    "fieldType": "textbox",
+    "position": [
+      2,
+      1
+    ]
+  },
+  {
+    "fieldName": "supportNumber",
+    "fieldLabel": "Support Number",
+    "fieldType": "numberfield",
+    "position": [
+      3,
+      1
+    ]
+  },
+  {
+    "fieldName": "isAdmin",
+    "fieldLabel": "Admin",
+    "fieldType": "checkbox",
+    "position": [
+      4,
+      1
+    ]
+  },
+  {
+    "fieldName": "permissions",
+    "fieldLabel": "Permissions",
+    "fieldType": "multiple-select",
+    "position": [
+      5,
+      1
+    ],
+    "options": [
+      "edit-customer",
+      "view-customer",
+      "edit-deal",
+      "view-deal"
+    ]
+  },
+  {
+    "fieldName": "createUserButton",
+    "fieldLabel": "Save",
+    "fieldType": "button",
+    "position": [
+      6,
+      1
+    ],
+    "function": "/user/save"
+  }
+]

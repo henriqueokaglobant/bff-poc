@@ -1,0 +1,9 @@
+To run this application:
+* JDK: 17
+* Main class: DynamicScreenApplication
+
+Using the application:
+* Call the endpoint like this: http://localhost:8080/screen?template=user_profile&license=free&role=support
+* Output will be a Json based on the existing json files and different licenses and roles will filter out some of the data from the json
+* The filenames available are the one in the resources/screen folder
+* The filtering rules are store in the h2 DB and will be auto created when the application starts (see DataInitializer.java)
