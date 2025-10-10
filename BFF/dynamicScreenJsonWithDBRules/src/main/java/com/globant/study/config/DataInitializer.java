@@ -23,28 +23,25 @@ public class DataInitializer implements ApplicationListener<ApplicationReadyEven
     }
 
     private void initializeData() {
-        ruleRepository.save(createRule("license", "enterprise", "company"));
-        ruleRepository.save(createRule("license", "free", "document"));
-        ruleRepository.save(createRule("license", "free", "licenseNumber"));
-        ruleRepository.save(createRule("role", "admin", "supportNumber"));
-        ruleRepository.save(createRule("role", "support", "isAdmin"));
-        ruleRepository.save(createRule("role", "support", "permissions"));
-        LOGGER.info(Utils.green("======================================="));
-        LOGGER.info(Utils.green("======================================="));
-        LOGGER.info(Utils.green("======================================="));
-        LOGGER.info(Utils.green("======================================="));
+        boolean include = true;
+        boolean exclude = false;
+        ruleRepository.save(createRule("user_profile", "license", "enterprise", "company", include));
+        ruleRepository.save(createRule("user_profile", "license", "free", "document", include));
+        ruleRepository.save(createRule("user_profile", "license", "free", "licenseNumber", exclude));
+        ruleRepository.save(createRule("user_profile", "role", "admin", "supportNumber", include));
+        ruleRepository.save(createRule("user_profile", "role", "support", "isAdmin", include));
+        ruleRepository.save(createRule("user_profile", "role", "support", "permissions", exclude));
+        ruleRepository.save(createRule("customer_onboarding", "role", "support", "permissions", include));
         LOGGER.info(Utils.green("Initial data inserted into H2 database."));
-        LOGGER.info(Utils.green("======================================="));
-        LOGGER.info(Utils.green("======================================="));
-        LOGGER.info(Utils.green("======================================="));
-        LOGGER.info(Utils.green("======================================="));
     }
 
-    private RuleEntity createRule(String propertyName, String propertyValue, String jsonContent) {
+    private RuleEntity createRule(String template, String propertyName, String propertyValue, String jsonContent, boolean include) {
         RuleEntity rule = new RuleEntity();
+        rule.setTemplate(template);
         rule.setPropertyName(propertyName);
         rule.setPropertyValue(propertyValue);
         rule.setJsonItem(jsonContent);
+        rule.setInclude(include);
         return rule;
     }
 

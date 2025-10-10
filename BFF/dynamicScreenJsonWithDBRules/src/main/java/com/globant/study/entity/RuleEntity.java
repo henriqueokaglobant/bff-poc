@@ -12,6 +12,9 @@ public class RuleEntity implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Integer id;
 
+    // Template is the .json file for which this rule is applied
+    String template;
+
     // Property type such as License, Permission, Client
     String propertyName;
 
@@ -21,12 +24,23 @@ public class RuleEntity implements Serializable {
     // Json id that will be removed if the property and value matches
     String jsonItem;
 
+    // Include will overwrite the default properties and include or exclude tem json component
+    Boolean include;
+
     public Integer getId() {
         return id;
     }
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    public String getTemplate() {
+        return template;
+    }
+
+    public void setTemplate(String template) {
+        this.template = template;
     }
 
     public String getPropertyName() {
@@ -53,13 +67,11 @@ public class RuleEntity implements Serializable {
         this.jsonItem = jsonItem;
     }
 
-    @Override
-    public String toString() {
-        return "RuleEntity{" +
-                "id=" + id +
-                ", propertyName='" + propertyName + '\'' +
-                ", propertyValue='" + propertyValue + '\'' +
-                ", jsonContent='" + jsonItem + '\'' +
-                '}';
+    public Boolean getInclude() {
+        return include;
+    }
+
+    public void setInclude(Boolean include) {
+        this.include = include;
     }
 }

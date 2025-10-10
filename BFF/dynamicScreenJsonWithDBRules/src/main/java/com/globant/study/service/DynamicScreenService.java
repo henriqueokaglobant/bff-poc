@@ -7,7 +7,9 @@ import com.globant.study.dto.ScreenDTO;
 import com.globant.study.entity.RuleEntity;
 import com.globant.study.repository.RuleRepository;
 import com.globant.study.utils.Utils;
+import org.apache.commons.lang3.BooleanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ResourceUtils;
 
@@ -17,24 +19,36 @@ import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
 @Service
 public class DynamicScreenService {
     public final Logger LOGGER = Logger.getLogger(getClass().getName());
+
     @Autowired
     private RuleRepository ruleRepository;
 
-    public List<ScreenDTO> calculateScreenJson(String template, String license, String role) {
-        List<ScreenDTO> screenDTOList = readScreenDTOFromFile(template);
-        LOGGER.info(Utils.yellow("FULL LIST: \n" + screenDTOList.stream().map(ScreenDTO::toString).collect(Collectors.joining("\n"))));
-        screenDTOList = filterOutByPropertyRules("license", license, screenDTOList);
-        screenDTOList = filterOutByPropertyRules("role", role, screenDTOList);
-        LOGGER.info(Utils.blue("FILTERED LIST: \n" + screenDTOList.stream().map(ScreenDTO::toString).collect(Collectors.joining("\n"))));
+    @Value("#{${license}}")
+    private Map<String, String> licenseByUser;
 
-//        return screenDTOList.stream().map(ScreenDTO::toString).collect(Collectors.joining(", "));
-        return screenDTOList;
+    @Value("#{${role}}")
+    private Map<String, String> roleByUser;
+
+    public List<ScreenDTO> calculateScreenJson(String template, String user) {
+        String license = getLicenseFromUser(user);
+        String role = getRoleFromUser(user);
+        List<ScreenDTO> screenDTOList = readScreenDTOFromFile(template);
+        List<RuleEntity> ruleEntityList = new ArrayList<>();
+        // Gather rules
+        ruleEntityList.addAll(filterOutByPropertyRules(template, "license", license));
+        ruleEntityList.addAll(filterOutByPropertyRules(template, "role", role));
+        // Apply rules (basically it's setting the include flag)
+        applyRules(screenDTOList, ruleEntityList);
+        logResultData(screenDTOList);
+        // Return filtered data: only elements which are supposed to be included
+        return screenDTOList.stream().filter(ScreenDTO::getInclude).toList();
     }
 
     private List<ScreenDTO> readScreenDTOFromFile(String template) {
@@ -51,10 +65,44 @@ public class DynamicScreenService {
         return screenDTOList;
     }
 
-    private List<ScreenDTO> filterOutByPropertyRules(String propertyName, String propertyValue, List<ScreenDTO> screenDTOList) {
-        List<RuleEntity> ruleEntityList = ruleRepository.findByPropertyNameAndPropertyValue(propertyName, propertyValue);
-        List<String> toRemove = ruleEntityList.stream().map(RuleEntity::getJsonItem).toList();
-        LOGGER.info(Utils.magenta("Removing: " + String.join(",", toRemove)));
-        return screenDTOList.stream().filter(dto -> !toRemove.contains(dto.getFieldName())).toList();
+    private List<RuleEntity> filterOutByPropertyRules(String template, String propertyName, String propertyValue) {
+        List<RuleEntity> ruleEntityList = ruleRepository.findByTemplateAndPropertyNameAndPropertyValue(template, propertyName, propertyValue);
+        LOGGER.info(Utils.magenta("\nRules found: \n" + ruleEntityList.stream()
+                .map(r -> r.getJsonItem() + "/" + (BooleanUtils.isTrue(r.getInclude()) ? "show" : "hide")).collect(Collectors.joining("\n"))));
+        return ruleEntityList;
+    }
+
+    private void applyRules(List<ScreenDTO> screenDTOList, List<RuleEntity> ruleEntityList) {
+        screenDTOList.forEach(dto -> {
+            boolean isIncludedByDefault = dto.getIncludeByDefault();
+            boolean hasInclusionRule = ruleEntityList.stream().anyMatch(r -> dto.getFieldName().equals(r.getJsonItem()) && r.getInclude());
+            boolean hasExclusionRule = ruleEntityList.stream().anyMatch(r -> dto.getFieldName().equals(r.getJsonItem()) && !r.getInclude());
+            // must be included either by default or by rules, exclusion will override any kind of inclusion
+            dto.setInclude((isIncludedByDefault || hasInclusionRule) && !hasExclusionRule);
+        });
+    }
+
+    private String getLicenseFromUser(String user) {
+        String result = licenseByUser.get(user);
+        LOGGER.info(Utils.blue("\nLicense found: " + result));
+        return result;
+    }
+
+    private String getRoleFromUser(String user) {
+        String result = roleByUser.get(user);
+        LOGGER.info(Utils.blue("\nRole found: " + result));
+        return result;
+    }
+
+    private void logResultData(List<ScreenDTO> screenDTOList) {
+        StringBuffer logResult = new StringBuffer("\n=====FILTERED LIST:=====\n");
+        screenDTOList.forEach(dto -> {
+            if (dto.getInclude()) {
+                logResult.append(Utils.green(dto.toString())).append("\n");
+            } else {
+                logResult.append(Utils.red(dto.toString())).append("\n");
+            }
+        });
+        LOGGER.info(logResult.toString());
     }
 }

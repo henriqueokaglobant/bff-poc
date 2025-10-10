@@ -3,6 +3,7 @@
     "fieldName": "firstName",
     "fieldLabel": "First Name",
     "fieldType": "textbox",
+    "includeByDefault": true,
     "position": [
       1,
       1
@@ -12,6 +13,7 @@
     "fieldName": "lastName",
     "fieldLabel": "Last Name",
     "fieldType": "textbox",
+    "includeByDefault": true,
     "position": [
       1,
       2
@@ -30,6 +32,7 @@
     "fieldName": "licenseNumber",
     "fieldLabel": "License Number",
     "fieldType": "textbox",
+    "includeByDefault": false,
     "position": [
       2,
       1
@@ -39,6 +42,7 @@
     "fieldName": "supportNumber",
     "fieldLabel": "Support Number",
     "fieldType": "numberfield",
+    "includeByDefault": false,
     "position": [
       3,
       1

@@ -30,8 +30,7 @@ public class DynamicScreenController {
     DynamicScreenService dynamicScreenService;
 
     @GetMapping("/screen")
-    public List<ScreenDTO> getScreenJson(@RequestParam String template, @RequestParam String license, @RequestParam String role) {
-//        return new ResponseEntity<>(dynamicScreenService.calculateScreenJson(template, license, role), HttpStatus.OK);
-        return dynamicScreenService.calculateScreenJson(template, license, role);
+    public List<ScreenDTO> getScreenJson(@RequestParam String template, @RequestParam String user) {
+        return dynamicScreenService.calculateScreenJson(template, user);
     }
 }

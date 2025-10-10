@@ -8,8 +8,10 @@ public class ScreenDTO {
     String fieldLabel;
     String fieldType;
     String function;
+    Boolean includeByDefault = false;
     List<Integer> position;
     List<String> options;
+    Boolean include = false;
 
     public String getFieldName() {
         return fieldName;
@@ -35,20 +37,28 @@ public class ScreenDTO {
         this.fieldType = fieldType;
     }
 
-    public List<Integer> getPosition() {
-        return position;
-    }
-
-    public void setPosition(List<Integer> position) {
-        this.position = position;
-    }
-
     public String getFunction() {
         return function;
     }
 
     public void setFunction(String function) {
         this.function = function;
+    }
+
+    public Boolean getIncludeByDefault() {
+        return includeByDefault;
+    }
+
+    public void setIncludeByDefault(Boolean includeByDefault) {
+        this.includeByDefault = includeByDefault;
+    }
+
+    public List<Integer> getPosition() {
+        return position;
+    }
+
+    public void setPosition(List<Integer> position) {
+        this.position = position;
     }
 
     public List<String> getOptions() {
@@ -59,6 +69,14 @@ public class ScreenDTO {
         this.options = options;
     }
 
+    public Boolean getInclude() {
+        return include;
+    }
+
+    public void setInclude(Boolean include) {
+        this.include = include;
+    }
+
     @Override
     public String toString() {
         return "ScreenDTO{" +
@@ -66,8 +84,10 @@ public class ScreenDTO {
                 ", fieldLabel='" + fieldLabel + '\'' +
                 ", fieldType='" + fieldType + '\'' +
                 ", function='" + function + '\'' +
+                ", includeByDefault=" + includeByDefault +
                 ", position=" + position +
                 ", options=" + options +
+                ", include=" + include +
                 '}';
     }
 }

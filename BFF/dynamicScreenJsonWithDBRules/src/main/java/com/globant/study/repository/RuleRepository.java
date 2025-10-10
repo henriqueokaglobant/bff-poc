@@ -7,5 +7,5 @@ import java.util.List;
 
 public interface RuleRepository extends JpaRepository<RuleEntity, Integer> {
 
-    List<RuleEntity> findByPropertyNameAndPropertyValue(String propertyName, String propertyValue);
+    List<RuleEntity> findByTemplateAndPropertyNameAndPropertyValue(String template, String propertyName, String propertyValue);
 }
