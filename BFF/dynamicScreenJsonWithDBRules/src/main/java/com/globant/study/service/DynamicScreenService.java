@@ -5,9 +5,14 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.globant.study.dto.ScreenComponentDTO;
 import com.globant.study.entity.RuleEntity;
+import com.globant.study.entity.ScreenComponentEntity;
+import com.globant.study.repository.LocalizationRepository;
 import com.globant.study.repository.RuleRepository;
+import com.globant.study.repository.ScreenComponentRepository;
 import com.globant.study.utils.Utils;
 import org.apache.commons.lang3.BooleanUtils;
+import org.modelmapper.ModelMapper;
+import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.MessageSource;
@@ -33,6 +38,12 @@ public class DynamicScreenService {
     private RuleRepository ruleRepository;
 
     @Autowired
+    private ScreenComponentRepository screenComponentRepository;
+
+    @Autowired
+    private LocalizationRepository localizationRepository;
+
+    @Autowired
     private MessageSource messageSource;
 
     @Value("#{${license}}")
@@ -47,11 +58,17 @@ public class DynamicScreenService {
     @Value("#{${language}}")
     private Map<String, String> languageByUser;
 
+    @Value("#{${jsonDataInFile}}")
+    private Boolean jsonDataInFile;
+
+    @Value("#{${localizationInFile}}")
+    private Boolean localizationInFile;
+
     public List<ScreenComponentDTO> calculateScreenJson(String template, String user) {
         String license = getLicenseFromUser(user);
         String role = getRoleFromUser(user);
         Locale locale = getLocaleFromUser(user);
-        List<ScreenComponentDTO> screenComponentDTOList = readScreenDTOFromFile(template);
+        List<ScreenComponentDTO> screenComponentDTOList = jsonDataInFile ? readScreenDTOFromFile(template) : readScreenDTOFromDB(template);
         List<RuleEntity> ruleEntityList = new ArrayList<>();
         // Gather rules
         ruleEntityList.addAll(filterOutByPropertyRules(template, "license", license));
@@ -80,6 +97,13 @@ public class DynamicScreenService {
         return screenComponentDTOList;
     }
 
+    private List<ScreenComponentDTO> readScreenDTOFromDB(String template) {
+        ModelMapper modelMapper = new ModelMapper();
+        List<ScreenComponentEntity> screenComponentEntityList = screenComponentRepository.findByTemplateName(template);
+        return modelMapper.map(screenComponentEntityList, new TypeToken<List<ScreenComponentDTO>>() {
+        }.getType());
+    }
+
     private List<RuleEntity> filterOutByPropertyRules(String template, String propertyName, String propertyValue) {
         List<RuleEntity> ruleEntityList = ruleRepository.findByTemplateAndPropertyNameAndPropertyValue(template, propertyName, propertyValue);
         LOGGER.info(Utils.magenta("\nRules found: \n" + ruleEntityList.stream()
@@ -94,7 +118,8 @@ public class DynamicScreenService {
             boolean hasExclusionRule = ruleEntityList.stream().anyMatch(r -> dto.getFieldName().equals(r.getJsonComponent()) && !r.getInclude());
             // must be included either by default or by rules, exclusion will override any kind of inclusion
             dto.setInclude((isIncludedByDefault || hasInclusionRule) && !hasExclusionRule);
-            dto.setLabel(messageSource.getMessage(dto.getFieldLabel(), null, locale));
+            String label = localizationInFile ? messageSource.getMessage(dto.getFieldLabel(), null, locale) : localizationRepository.findByLocaleAndMessageKey(locale.toString(), dto.getFieldLabel()).getMessageValue();
+            dto.setLabel(label);
         });
     }
 

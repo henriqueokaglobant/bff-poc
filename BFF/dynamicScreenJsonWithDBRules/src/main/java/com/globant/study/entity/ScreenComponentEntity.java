@@ -13,7 +13,7 @@ public class ScreenComponentEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Integer id;
-    String template;
+    String templateName;
     String fieldName;
     String fieldLabel;
     String fieldType;
@@ -30,12 +30,12 @@ public class ScreenComponentEntity {
         this.id = id;
     }
 
-    public String getTemplate() {
-        return template;
+    public String getTemplateName() {
+        return templateName;
     }
 
-    public void setTemplate(String template) {
-        this.template = template;
+    public void setTemplateName(String templateName) {
+        this.templateName = templateName;
     }
 
     public String getFieldName() {
