@@ -2,65 +2,37 @@
   {
     "fieldName": "firstName",
     "fieldLabel": "First Name",
-    "fieldType": "textbox",
-    "position": [
-      1,
-      1
-    ]
+    "fieldType": "textbox"
   },
   {
     "fieldName": "lastName",
     "fieldLabel": "Last Name",
-    "fieldType": "textbox",
-    "position": [
-      1,
-      2
-    ]
+    "fieldType": "textbox"
   },
   {
     "fieldName": "company",
     "fieldLabel": "Company",
-    "fieldType": "textbox",
-    "position": [
-      2,
-      1
-    ]
+    "fieldType": "textbox"
   },
   {
     "fieldName": "birthdate",
     "fieldLabel": "Date of Birth",
-    "fieldType": "date-input",
-    "position": [
-      3,
-      1
-    ]
+    "fieldType": "date-input"
   },
   {
     "fieldName": "zipcode",
     "fieldLabel": "Zip Code",
-    "fieldType": "numberfield",
-    "position": [
-      4,
-      1
-    ]
+    "fieldType": "numberfield"
   },
   {
     "fieldName": "address",
     "fieldLabel": "Address",
-    "fieldType": "textbox",
-    "position": [
-      5,
-      1
-    ]
+    "fieldType": "textbox"
   },
   {
     "fieldName": "notificationType",
     "fieldLabel": "Notify by",
     "fieldType": "radio",
-    "position": [
-      6,
-      1
-    ],
     "options": [
       "email",
       "sms",
@@ -71,10 +43,6 @@
     "fieldName": "createCustomerButton",
     "fieldLabel": "Save",
     "fieldType": "button",
-    "position": [
-      7,
-      1
-    ],
     "function": "/customer/save"
   }
 ]

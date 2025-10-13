@@ -22,7 +22,7 @@ public class RuleEntity implements Serializable {
     String propertyValue;
 
     // Json id that will be removed if the property and value matches
-    String jsonItem;
+    String jsonComponent;
 
     // Include will overwrite the default properties and include or exclude tem json component
     Boolean include;
@@ -59,12 +59,12 @@ public class RuleEntity implements Serializable {
         this.propertyValue = propertyValue;
     }
 
-    public String getJsonItem() {
-        return jsonItem;
+    public String getJsonComponent() {
+        return jsonComponent;
     }
 
-    public void setJsonItem(String jsonItem) {
-        this.jsonItem = jsonItem;
+    public void setJsonComponent(String jsonComponent) {
+        this.jsonComponent = jsonComponent;
     }
 
     public Boolean getInclude() {

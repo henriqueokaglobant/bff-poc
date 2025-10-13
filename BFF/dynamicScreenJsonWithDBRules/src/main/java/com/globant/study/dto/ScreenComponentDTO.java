@@ -2,8 +2,9 @@ package com.globant.study.dto;
 
 import java.util.List;
 
-public class ScreenDTO {
+public class ScreenComponentDTO {
 
+    String templateName;
     String fieldName;
     String fieldLabel;
     String fieldType;
@@ -11,7 +12,18 @@ public class ScreenDTO {
     Boolean includeByDefault = false;
     List<Integer> position;
     List<String> options;
+
+    // Calculated fields
+    String label;
     Boolean include = false;
+
+    public String getTemplateName() {
+        return templateName;
+    }
+
+    public void setTemplateName(String templateName) {
+        this.templateName = templateName;
+    }
 
     public String getFieldName() {
         return fieldName;
@@ -69,6 +81,14 @@ public class ScreenDTO {
         this.options = options;
     }
 
+    public String getLabel() {
+        return label;
+    }
+
+    public void setLabel(String label) {
+        this.label = label;
+    }
+
     public Boolean getInclude() {
         return include;
     }
@@ -79,14 +99,16 @@ public class ScreenDTO {
 
     @Override
     public String toString() {
-        return "ScreenDTO{" +
-                "fieldName='" + fieldName + '\'' +
+        return "ScreenComponentDTO{" +
+                "templateName='" + templateName + '\'' +
+                ", fieldName='" + fieldName + '\'' +
                 ", fieldLabel='" + fieldLabel + '\'' +
                 ", fieldType='" + fieldType + '\'' +
                 ", function='" + function + '\'' +
                 ", includeByDefault=" + includeByDefault +
                 ", position=" + position +
                 ", options=" + options +
+                ", label='" + label + '\'' +
                 ", include=" + include +
                 '}';
     }

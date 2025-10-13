@@ -1,36 +1,24 @@
 [
   {
-    "fieldName": "firstName",
-    "fieldLabel": "First Name",
+    "fieldName": "user.firstName",
+    "fieldLabel": "firstNameLabel",
     "fieldType": "textbox",
-    "includeByDefault": true,
-    "position": [
-      1,
-      1
-    ]
+    "includeByDefault": true
   },
   {
-    "fieldName": "lastName",
-    "fieldLabel": "Last Name",
+    "fieldName": "user.lastName",
+    "fieldLabel": "lastNameLabel",
     "fieldType": "textbox",
-    "includeByDefault": true,
-    "position": [
-      1,
-      2
-    ]
+    "includeByDefault": true
   },
   {
     "fieldName": "document",
-    "fieldLabel": "Document",
-    "fieldType": "textbox",
-    "position": [
-      1,
-      2
-    ]
+    "fieldLabel": "documentLabel",
+    "fieldType": "textbox"
   },
   {
     "fieldName": "licenseNumber",
-    "fieldLabel": "License Number",
+    "fieldLabel": "licenseNumberLabel",
     "fieldType": "textbox",
     "includeByDefault": false,
     "position": [
@@ -40,31 +28,19 @@
   },
   {
     "fieldName": "supportNumber",
-    "fieldLabel": "Support Number",
+    "fieldLabel": "supportNumberLabel",
     "fieldType": "numberfield",
-    "includeByDefault": false,
-    "position": [
-      3,
-      1
-    ]
+    "includeByDefault": false
   },
   {
     "fieldName": "isAdmin",
-    "fieldLabel": "Admin",
-    "fieldType": "checkbox",
-    "position": [
-      4,
-      1
-    ]
+    "fieldLabel": "isAdminLabel",
+    "fieldType": "checkbox"
   },
   {
     "fieldName": "permissions",
-    "fieldLabel": "Permissions",
+    "fieldLabel": "permissionsLabel",
     "fieldType": "multiple-select",
-    "position": [
-      5,
-      1
-    ],
     "options": [
       "edit-customer",
       "view-customer",
@@ -74,12 +50,8 @@
   },
   {
     "fieldName": "createUserButton",
-    "fieldLabel": "Save",
+    "fieldLabel": "createUserButtonLabel",
     "fieldType": "button",
-    "position": [
-      6,
-      1
-    ],
     "function": "/user/save"
   }
 ]
