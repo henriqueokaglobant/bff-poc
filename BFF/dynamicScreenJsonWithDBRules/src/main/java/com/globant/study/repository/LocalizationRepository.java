@@ -1,12 +1,11 @@
 package com.globant.study.repository;
 
 import com.globant.study.entity.LocalizationEntity;
-import com.globant.study.entity.ScreenComponentEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import java.util.List;
+import java.util.Optional;
 
 public interface LocalizationRepository extends JpaRepository<LocalizationEntity, Integer> {
 
-    LocalizationEntity findByLocaleAndMessageKey(String locale, String messageKey);
+    Optional<LocalizationEntity> findByLocaleAndMessageKey(String locale, String messageKey);
 }

@@ -3,7 +3,8 @@
     "fieldName": "user.firstName",
     "fieldLabel": "firstNameLabel",
     "fieldType": "textbox",
-    "includeByDefault": true
+    "includeByDefault": true,
+    "style": "width:80px; align:right"
   },
   {
     "fieldName": "user.lastName",
@@ -12,33 +13,45 @@
     "includeByDefault": true
   },
   {
-    "fieldName": "document",
+    "fieldName": "user.document",
     "fieldLabel": "documentLabel",
     "fieldType": "textbox"
   },
   {
-    "fieldName": "licenseNumber",
-    "fieldLabel": "licenseNumberLabel",
-    "fieldType": "textbox",
-    "includeByDefault": false,
-    "position": [
-      2,
-      1
-    ]
+    "fieldName": "user.address",
+    "fieldLabel": "Address",
+    "fieldType": "textbox"
   },
   {
-    "fieldName": "supportNumber",
+    "fieldName": "user.address.zipcode",
+    "fieldLabel": "Zip Code",
+    "fieldType": "numberfield"
+  },
+  {
+    "fieldName": "company.licenseNumber",
+    "fieldLabel": "licenseNumberLabel",
+    "fieldType": "textbox",
+    "includeByDefault": false
+  },
+  {
+    "fieldName": "company.supportNumber",
     "fieldLabel": "supportNumberLabel",
     "fieldType": "numberfield",
     "includeByDefault": false
   },
   {
-    "fieldName": "isAdmin",
+    "fieldName": "company.document",
+    "fieldLabel": "documentLabel",
+    "fieldType": "numberfield",
+    "includeByDefault": false
+  },
+  {
+    "fieldName": "user.isAdmin",
     "fieldLabel": "isAdminLabel",
     "fieldType": "checkbox"
   },
   {
-    "fieldName": "permissions",
+    "fieldName": "user.permissions",
     "fieldLabel": "permissionsLabel",
     "fieldType": "multiple-select",
     "options": [

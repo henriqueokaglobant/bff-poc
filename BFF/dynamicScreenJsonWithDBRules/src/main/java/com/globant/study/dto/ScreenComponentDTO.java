@@ -9,8 +9,9 @@ public class ScreenComponentDTO {
     String fieldLabel;
     String fieldType;
     String function;
+    String style;
     Boolean includeByDefault = false;
-    List<Integer> position;
+    Integer orderPriority;
     List<String> options;
 
     // Calculated fields
@@ -57,6 +58,14 @@ public class ScreenComponentDTO {
         this.function = function;
     }
 
+    public String getStyle() {
+        return style;
+    }
+
+    public void setStyle(String style) {
+        this.style = style;
+    }
+
     public Boolean getIncludeByDefault() {
         return includeByDefault;
     }
@@ -65,12 +74,12 @@ public class ScreenComponentDTO {
         this.includeByDefault = includeByDefault;
     }
 
-    public List<Integer> getPosition() {
-        return position;
+    public Integer getOrderPriority() {
+        return orderPriority;
     }
 
-    public void setPosition(List<Integer> position) {
-        this.position = position;
+    public void setOrderPriority(Integer orderPriority) {
+        this.orderPriority = orderPriority;
     }
 
     public List<String> getOptions() {
@@ -105,8 +114,9 @@ public class ScreenComponentDTO {
                 ", fieldLabel='" + fieldLabel + '\'' +
                 ", fieldType='" + fieldType + '\'' +
                 ", function='" + function + '\'' +
+                ", style='" + style + '\'' +
                 ", includeByDefault=" + includeByDefault +
-                ", position=" + position +
+                ", orderPriority=" + orderPriority +
                 ", options=" + options +
                 ", label='" + label + '\'' +
                 ", include=" + include +

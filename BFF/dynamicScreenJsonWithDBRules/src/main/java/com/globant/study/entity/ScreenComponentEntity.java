@@ -18,6 +18,7 @@ public class ScreenComponentEntity {
     String fieldLabel;
     String fieldType;
     String function;
+    String style;
     Boolean includeByDefault = false;
     List<Integer> position;
     List<String> options;
@@ -92,5 +93,13 @@ public class ScreenComponentEntity {
 
     public void setOptions(List<String> options) {
         this.options = options;
+    }
+
+    public String getStyle() {
+        return style;
+    }
+
+    public void setStyle(String style) {
+        this.style = style;
     }
 }

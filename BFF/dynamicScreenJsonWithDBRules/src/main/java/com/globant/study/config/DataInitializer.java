@@ -26,8 +26,6 @@ import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
 import java.util.logging.Logger;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 @Component
 public class DataInitializer implements ApplicationListener<ApplicationReadyEvent> {
@@ -42,9 +40,6 @@ public class DataInitializer implements ApplicationListener<ApplicationReadyEven
     @Autowired
     private ScreenComponentRepository screenComponentRepository;
 
-//    @Autowired
-//    private MessageSource messageSource;
-
     @Autowired
     private ResourceBundleMessageSource messageSource;
 
@@ -58,13 +53,13 @@ public class DataInitializer implements ApplicationListener<ApplicationReadyEven
     private void initializeRuleData() {
         boolean include = true;
         boolean exclude = false;
-        ruleRepository.save(createRule("user_profile", "license", "enterprise", "company", include));
-        ruleRepository.save(createRule("user_profile", "license", "free", "document", include));
-        ruleRepository.save(createRule("user_profile", "license", "free", "licenseNumber", exclude));
-        ruleRepository.save(createRule("user_profile", "role", "admin", "supportNumber", include));
-        ruleRepository.save(createRule("user_profile", "role", "support", "isAdmin", include));
-        ruleRepository.save(createRule("user_profile", "role", "support", "permissions", exclude));
-        ruleRepository.save(createRule("customer_onboarding", "role", "support", "permissions", include));
+        ruleRepository.save(createRule("user_profile", "license", "enterprise", "company.document", include, 1));
+        ruleRepository.save(createRule("user_profile", "license", "free", "user.document", include, null));
+        ruleRepository.save(createRule("user_profile", "license", "free", "company.licenseNumber", exclude, null));
+        ruleRepository.save(createRule("user_profile", "role", "admin", "company.supportNumber", include, null));
+        ruleRepository.save(createRule("user_profile", "role", "support", "user.isAdmin", include, null));
+        ruleRepository.save(createRule("user_profile", "role", "support", "user.permissions", exclude, null));
+        ruleRepository.save(createRule("customer_onboarding", "role", "support", "user.permissions", include, null));
         LOGGER.info(Utils.green("Initial RULE data inserted into H2 database."));
     }
 
@@ -109,13 +104,14 @@ public class DataInitializer implements ApplicationListener<ApplicationReadyEven
         return fileNames;
     }
 
-    private RuleEntity createRule(String template, String propertyName, String propertyValue, String jsonContent, boolean include) {
+    private RuleEntity createRule(String template, String propertyName, String propertyValue, String jsonContent, boolean include, Integer orderPriority) {
         RuleEntity rule = new RuleEntity();
         rule.setTemplate(template);
         rule.setPropertyName(propertyName);
         rule.setPropertyValue(propertyValue);
-        rule.setJsonComponent(jsonContent);
+        rule.setComponentName(jsonContent);
         rule.setInclude(include);
+        rule.setOrderPriority(orderPriority);
         return rule;
     }
 
@@ -128,34 +124,10 @@ public class DataInitializer implements ApplicationListener<ApplicationReadyEven
         LOGGER.info(Utils.green("Initial Localization data (messages) inserted into H2 database."));
     }
 
-
     private Set<Locale> getAllAvailableLocales() {
         Set<Locale> locales = new HashSet<>();
-        try {
-            String basename = messageSource.getBasenameSet().iterator().next(); // Assuming one basename for simplicity
-            String resourcePattern = "classpath*:" + basename.replace('.', '/') + "*.properties";
-
-            PathMatchingResourcePatternResolver resolver = new PathMatchingResourcePatternResolver();
-            Resource[] resources = resolver.getResources(resourcePattern);
-
-            Pattern localePattern = Pattern.compile(basename + "_([a-z]{2}(_[A-Z]{2})?)\\.properties");
-
-            for (Resource resource : resources) {
-                String filename = resource.getFilename();
-                if (filename != null) {
-                    Matcher matcher = localePattern.matcher(filename);
-                    if (matcher.find()) {
-                        String localeString = matcher.group(1).replace('_', '-');
-                        locales.add(Locale.forLanguageTag(localeString));
-                    } else if (filename.equals(basename + ".properties")) {
-                        // Add the default locale if a default messages.properties exists
-                        locales.add(Locale.getDefault()); // Or a specific default if configured
-                    }
-                }
-            }
-        } catch (IOException e) {
-            LOGGER.severe(e.getMessage());
-        }
+        locales.add(new Locale.Builder().setLanguage("en").setRegion("US").build());
+        locales.add(new Locale.Builder().setLanguage("pt").setRegion("BR").build());
         return locales;
     }
 
@@ -168,7 +140,7 @@ public class DataInitializer implements ApplicationListener<ApplicationReadyEven
             LocalizationEntity localizationEntity = new LocalizationEntity();
             String key = keys.nextElement();
             localizationEntity.setLocale(locale.toString());
-            localizationEntity.setMessageKey(keys.nextElement());
+            localizationEntity.setMessageKey(key);
             localizationEntity.setMessageValue(messageSource.getMessage(key, null, locale));
             localizationEntityList.add(localizationEntity);
         }

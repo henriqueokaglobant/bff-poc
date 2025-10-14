@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.globant.study.dto.ScreenComponentDTO;
+import com.globant.study.entity.LocalizationEntity;
 import com.globant.study.entity.RuleEntity;
 import com.globant.study.entity.ScreenComponentEntity;
 import com.globant.study.repository.LocalizationRepository;
@@ -15,6 +16,7 @@ import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ResourceUtils;
@@ -23,16 +25,14 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
+import java.util.*;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
 @Service
 public class DynamicScreenService {
     public final Logger LOGGER = Logger.getLogger(getClass().getName());
+    public final Comparator<Integer> naturalOrderNullsLast = Comparator.nullsLast(Comparator.naturalOrder());
 
     @Autowired
     private RuleRepository ruleRepository;
@@ -64,6 +64,7 @@ public class DynamicScreenService {
     @Value("#{${localizationInFile}}")
     private Boolean localizationInFile;
 
+    @Cacheable(value = "calculateScreenJson")
     public List<ScreenComponentDTO> calculateScreenJson(String template, String user) {
         String license = getLicenseFromUser(user);
         String role = getRoleFromUser(user);
@@ -107,20 +108,24 @@ public class DynamicScreenService {
     private List<RuleEntity> filterOutByPropertyRules(String template, String propertyName, String propertyValue) {
         List<RuleEntity> ruleEntityList = ruleRepository.findByTemplateAndPropertyNameAndPropertyValue(template, propertyName, propertyValue);
         LOGGER.info(Utils.magenta("\nRules found: \n" + ruleEntityList.stream()
-                .map(r -> r.getJsonComponent() + "/" + (BooleanUtils.isTrue(r.getInclude()) ? "show" : "hide")).collect(Collectors.joining("\n"))));
+                .map(r -> r.getComponentName() + "/" + (BooleanUtils.isTrue(r.getInclude()) ? "show" : "hide")).collect(Collectors.joining("\n"))));
         return ruleEntityList;
     }
 
     private void applyRules(List<ScreenComponentDTO> screenComponentDTOList, List<RuleEntity> ruleEntityList, Locale locale) {
         screenComponentDTOList.forEach(dto -> {
             boolean isIncludedByDefault = dto.getIncludeByDefault();
-            boolean hasInclusionRule = ruleEntityList.stream().anyMatch(r -> dto.getFieldName().equals(r.getJsonComponent()) && r.getInclude());
-            boolean hasExclusionRule = ruleEntityList.stream().anyMatch(r -> dto.getFieldName().equals(r.getJsonComponent()) && !r.getInclude());
+            boolean hasInclusionRule = ruleEntityList.stream().anyMatch(r -> dto.getFieldName().equals(r.getComponentName()) && r.getInclude());
+            boolean hasExclusionRule = ruleEntityList.stream().anyMatch(r -> dto.getFieldName().equals(r.getComponentName()) && !r.getInclude());
+            Integer orderPriority =   ruleEntityList.stream().filter(r -> dto.getFieldName().equals(r.getComponentName())).findFirst().map(RuleEntity::getOrderPriority).orElse(null);
             // must be included either by default or by rules, exclusion will override any kind of inclusion
             dto.setInclude((isIncludedByDefault || hasInclusionRule) && !hasExclusionRule);
-            String label = localizationInFile ? messageSource.getMessage(dto.getFieldLabel(), null, locale) : localizationRepository.findByLocaleAndMessageKey(locale.toString(), dto.getFieldLabel()).getMessageValue();
+            dto.setOrderPriority(orderPriority);
+
+            String label = localizationInFile ? messageSource.getMessage(dto.getFieldLabel(), null, locale) : localizationRepository.findByLocaleAndMessageKey(locale.toString(), dto.getFieldLabel()).map(LocalizationEntity::getMessageValue).orElse("");
             dto.setLabel(label);
         });
+        screenComponentDTOList.sort(Comparator.comparing(ScreenComponentDTO::getOrderPriority, Comparator.nullsLast(Comparator.naturalOrder())));
     }
 
     private String getLicenseFromUser(String user) {
