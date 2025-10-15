@@ -23,9 +23,12 @@ import org.springframework.util.ResourceUtils;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
 import java.util.logging.Logger;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 @Component
 public class DataInitializer implements ApplicationListener<ApplicationReadyEvent> {
@@ -60,14 +63,14 @@ public class DataInitializer implements ApplicationListener<ApplicationReadyEven
         ruleRepository.save(createRule("user_profile", "role", "support", "user.isAdmin", include, null));
         ruleRepository.save(createRule("user_profile", "role", "support", "user.permissions", exclude, null));
         ruleRepository.save(createRule("customer_onboarding", "role", "support", "user.permissions", include, null));
-        LOGGER.info(Utils.green("Initial RULE data inserted into H2 database."));
+        LOGGER.info(Utils.green("Initial RULE data inserted into the database."));
     }
 
     private void initializeJsonComponentData() {
         try {
             List<ScreenComponentEntity> screenComponentEntityList = readScreenComponentFromFile();
             screenComponentRepository.saveAll(screenComponentEntityList);
-            LOGGER.info(Utils.green("Initial JSON COMPONENT data inserted into H2 database."));
+            LOGGER.info(Utils.green("Initial JSON COMPONENT data inserted into the database."));
         } catch (IOException e) {
             LOGGER.info(Utils.red("Failed to initialize JSON COMPONENT data."));
         }
@@ -117,17 +120,50 @@ public class DataInitializer implements ApplicationListener<ApplicationReadyEven
 
     private void initializeLocalizationData() {
         List<LocalizationEntity> localizationEntityList = new ArrayList<>();
-        for (Locale locale : getAllAvailableLocales()) {
-            localizationEntityList.addAll(getAllMessagesForLocale(locale));
+        try {
+            for (Locale locale : findAvailableLocales()) {
+                localizationEntityList.addAll(getAllMessagesForLocale(locale));
+            }
+            localizationRepository.saveAll(localizationEntityList);
+            LOGGER.info(Utils.green("Initial Localization data (messages) inserted into the database."));
+        } catch (IOException e) {
+            LOGGER.info(Utils.red("Failed to initialize LOCALIZATION data."));
         }
-        localizationRepository.saveAll(localizationEntityList);
-        LOGGER.info(Utils.green("Initial Localization data (messages) inserted into H2 database."));
     }
 
-    private Set<Locale> getAllAvailableLocales() {
-        Set<Locale> locales = new HashSet<>();
-        locales.add(new Locale.Builder().setLanguage("en").setRegion("US").build());
-        locales.add(new Locale.Builder().setLanguage("pt").setRegion("BR").build());
+    public List<Locale> findAvailableLocales() throws IOException {
+        List<Locale> locales = new ArrayList<>();
+        String bundleName = "messages";
+
+        // This is the regex pattern for finding locales.
+        // It captures the language and country codes from filenames like messages_en_US.properties
+        Pattern pattern = Pattern.compile("^" + bundleName + "(?:_([a-z]{2})(?:_([A-Z]{2}))?)?\\.properties$");
+
+        ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
+        Enumeration<URL> urls = classLoader.getResources("");
+
+        while (urls.hasMoreElements()) {
+            URL url = urls.nextElement();
+            // In a real application, you'd need more sophisticated logic
+            // to handle different resource types (e.g., jar files).
+            java.io.File directory = new java.io.File(url.getPath());
+            if (directory.exists() && directory.isDirectory()) {
+                for (java.io.File file : Objects.requireNonNull(directory.listFiles())) {
+                    Matcher matcher = pattern.matcher(file.getName());
+                    if (matcher.matches()) {
+                        String language = matcher.group(1);
+                        String country = matcher.group(2);
+                        if (language != null && country != null) {
+                            locales.add(new Locale(language, country));
+                        } else if (language != null) {
+                            locales.add(new Locale(language));
+                        }
+                    }
+                }
+            }
+        }
+        // Add the default locale, which corresponds to `messages.properties`
+        locales.add(Locale.ROOT);
         return locales;
     }
 
