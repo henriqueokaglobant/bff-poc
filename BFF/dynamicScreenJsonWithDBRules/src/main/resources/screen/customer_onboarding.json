@@ -1,38 +1,36 @@
 [
   {
-    "fieldName": "firstName",
-    "fieldLabel": "First Name",
-    "fieldType": "textbox"
+    "name": "person.firstName",
+    "labelKey": "firstNameLabel",
+    "type": "textbox",
+    "includeByDefault": true,
+    "style": "width:80px; align:right"
   },
   {
-    "fieldName": "lastName",
-    "fieldLabel": "Last Name",
-    "fieldType": "textbox"
+    "name": "person.lastName",
+    "labelKey": "lastNameLabel",
+    "type": "textbox",
+    "includeByDefault": true
   },
   {
-    "fieldName": "company",
-    "fieldLabel": "Company",
-    "fieldType": "textbox"
+    "name": "person.document",
+    "labelKey": "documentLabel",
+    "type": "textbox"
   },
   {
-    "fieldName": "birthdate",
-    "fieldLabel": "Date of Birth",
-    "fieldType": "date-input"
+    "name": "person.address",
+    "labelKey": "addressLabel",
+    "type": "textbox"
   },
   {
-    "fieldName": "zipcode",
-    "fieldLabel": "Zip Code",
-    "fieldType": "numberfield"
+    "name": "person.address.zipcode",
+    "labelKey": "zipcodeLabel",
+    "type": "numberfield"
   },
   {
-    "fieldName": "address",
-    "fieldLabel": "Address",
-    "fieldType": "textbox"
-  },
-  {
-    "fieldName": "notificationType",
-    "fieldLabel": "Notify by",
-    "fieldType": "radio",
+    "name": "notification.type",
+    "labelKey": "notificationTypeLabel",
+    "type": "radio",
     "options": [
       "email",
       "sms",
@@ -40,9 +38,19 @@
     ]
   },
   {
-    "fieldName": "createCustomerButton",
-    "fieldLabel": "Save",
-    "fieldType": "button",
+    "name": "notification.email",
+    "labelKey": "emailLabel",
+    "type": "textbox"
+  },
+  {
+    "name": "notification.phoneNumber",
+    "labelKey": "phoneNumberLabel",
+    "type": "numberfield"
+  },
+  {
+    "name": "createCustomerButton",
+    "labelKey": "createCustomerButtonLabel",
+    "type": "button",
     "function": "/customer/save"
   }
 ]

@@ -4,10 +4,10 @@ import java.util.List;
 
 public class ScreenComponentDTO {
 
-    String templateName;
-    String fieldName;
-    String fieldLabel;
-    String fieldType;
+    String template;
+    String name;
+    String labelKey;
+    String type;
     String function;
     String style;
     Boolean includeByDefault = false;
@@ -18,36 +18,36 @@ public class ScreenComponentDTO {
     String label;
     Boolean include = false;
 
-    public String getTemplateName() {
-        return templateName;
+    public String getTemplate() {
+        return template;
     }
 
-    public void setTemplateName(String templateName) {
-        this.templateName = templateName;
+    public void setTemplate(String template) {
+        this.template = template;
     }
 
-    public String getFieldName() {
-        return fieldName;
+    public String getName() {
+        return name;
     }
 
-    public void setFieldName(String fieldName) {
-        this.fieldName = fieldName;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public String getFieldLabel() {
-        return fieldLabel;
+    public String getLabelKey() {
+        return labelKey;
     }
 
-    public void setFieldLabel(String fieldLabel) {
-        this.fieldLabel = fieldLabel;
+    public void setLabelKey(String labelKey) {
+        this.labelKey = labelKey;
     }
 
-    public String getFieldType() {
-        return fieldType;
+    public String getType() {
+        return type;
     }
 
-    public void setFieldType(String fieldType) {
-        this.fieldType = fieldType;
+    public void setType(String type) {
+        this.type = type;
     }
 
     public String getFunction() {
@@ -109,10 +109,10 @@ public class ScreenComponentDTO {
     @Override
     public String toString() {
         return "ScreenComponentDTO{" +
-                "templateName='" + templateName + '\'' +
-                ", fieldName='" + fieldName + '\'' +
-                ", fieldLabel='" + fieldLabel + '\'' +
-                ", fieldType='" + fieldType + '\'' +
+                "templateName='" + template + '\'' +
+                ", fieldName='" + name + '\'' +
+                ", fieldLabel='" + labelKey + '\'' +
+                ", fieldType='" + type + '\'' +
                 ", function='" + function + '\'' +
                 ", style='" + style + '\'' +
                 ", includeByDefault=" + includeByDefault +

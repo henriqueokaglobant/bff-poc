@@ -93,14 +93,14 @@ public class DynamicScreenService {
             LOGGER.severe(e.getMessage());
         }
         screenComponentDTOList.forEach(dto -> {
-            dto.setTemplateName(template);
+            dto.setTemplate(template);
         });
         return screenComponentDTOList;
     }
 
     private List<ScreenComponentDTO> readScreenDTOFromDB(String template) {
         ModelMapper modelMapper = new ModelMapper();
-        List<ScreenComponentEntity> screenComponentEntityList = screenComponentRepository.findByTemplateName(template);
+        List<ScreenComponentEntity> screenComponentEntityList = screenComponentRepository.findByTemplate(template);
         return modelMapper.map(screenComponentEntityList, new TypeToken<List<ScreenComponentDTO>>() {
         }.getType());
     }
@@ -115,14 +115,14 @@ public class DynamicScreenService {
     private void applyRules(List<ScreenComponentDTO> screenComponentDTOList, List<RuleEntity> ruleEntityList, Locale locale) {
         screenComponentDTOList.forEach(dto -> {
             boolean isIncludedByDefault = dto.getIncludeByDefault();
-            boolean hasInclusionRule = ruleEntityList.stream().anyMatch(r -> dto.getFieldName().equals(r.getComponentName()) && r.getInclude());
-            boolean hasExclusionRule = ruleEntityList.stream().anyMatch(r -> dto.getFieldName().equals(r.getComponentName()) && !r.getInclude());
-            Integer orderPriority =   ruleEntityList.stream().filter(r -> dto.getFieldName().equals(r.getComponentName())).findFirst().map(RuleEntity::getOrderPriority).orElse(null);
+            boolean hasInclusionRule = ruleEntityList.stream().anyMatch(r -> dto.getName().equals(r.getComponentName()) && r.getInclude());
+            boolean hasExclusionRule = ruleEntityList.stream().anyMatch(r -> dto.getName().equals(r.getComponentName()) && !r.getInclude());
+            Integer orderPriority =   ruleEntityList.stream().filter(r -> dto.getName().equals(r.getComponentName())).findFirst().map(RuleEntity::getOrderPriority).orElse(null);
             // must be included either by default or by rules, exclusion will override any kind of inclusion
             dto.setInclude((isIncludedByDefault || hasInclusionRule) && !hasExclusionRule);
             dto.setOrderPriority(orderPriority);
 
-            String label = localizationInFile ? messageSource.getMessage(dto.getFieldLabel(), null, locale) : localizationRepository.findByLocaleAndMessageKey(locale.toString(), dto.getFieldLabel()).map(LocalizationEntity::getMessageValue).orElse("");
+            String label = localizationInFile ? messageSource.getMessage(dto.getLabelKey(), null, locale) : localizationRepository.findByLocaleAndMessageKey(locale.toString(), dto.getLabelKey()).map(LocalizationEntity::getMessageValue).orElse("");
             dto.setLabel(label);
         });
         screenComponentDTOList.sort(Comparator.comparing(ScreenComponentDTO::getOrderPriority, Comparator.nullsLast(Comparator.naturalOrder())));

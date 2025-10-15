@@ -1,59 +1,59 @@
 [
   {
-    "fieldName": "user.firstName",
-    "fieldLabel": "firstNameLabel",
-    "fieldType": "textbox",
+    "name": "person.firstName",
+    "labelKey": "firstNameLabel",
+    "type": "textbox",
     "includeByDefault": true,
     "style": "width:80px; align:right"
   },
   {
-    "fieldName": "user.lastName",
-    "fieldLabel": "lastNameLabel",
-    "fieldType": "textbox",
+    "name": "person.lastName",
+    "labelKey": "lastNameLabel",
+    "type": "textbox",
     "includeByDefault": true
   },
   {
-    "fieldName": "user.document",
-    "fieldLabel": "documentLabel",
-    "fieldType": "textbox"
+    "name": "person.document",
+    "labelKey": "documentLabel",
+    "type": "textbox"
   },
   {
-    "fieldName": "user.address",
-    "fieldLabel": "Address",
-    "fieldType": "textbox"
+    "name": "person.address",
+    "labelKey": "addressLabel",
+    "type": "textbox"
   },
   {
-    "fieldName": "user.address.zipcode",
-    "fieldLabel": "Zip Code",
-    "fieldType": "numberfield"
+    "name": "person.address.zipcode",
+    "labelKey": "zipcodeLabel",
+    "type": "numberfield"
   },
   {
-    "fieldName": "company.licenseNumber",
-    "fieldLabel": "licenseNumberLabel",
-    "fieldType": "textbox",
+    "name": "company.licenseNumber",
+    "labelKey": "licenseNumberLabel",
+    "type": "textbox",
     "includeByDefault": false
   },
   {
-    "fieldName": "company.supportNumber",
-    "fieldLabel": "supportNumberLabel",
-    "fieldType": "numberfield",
+    "name": "company.supportNumber",
+    "labelKey": "supportNumberLabel",
+    "type": "numberfield",
     "includeByDefault": false
   },
   {
-    "fieldName": "company.document",
-    "fieldLabel": "documentLabel",
-    "fieldType": "numberfield",
+    "name": "company.document",
+    "labelKey": "documentLabel",
+    "type": "numberfield",
     "includeByDefault": false
   },
   {
-    "fieldName": "user.isAdmin",
-    "fieldLabel": "isAdminLabel",
-    "fieldType": "checkbox"
+    "name": "user.isAdmin",
+    "labelKey": "isAdminLabel",
+    "type": "checkbox"
   },
   {
-    "fieldName": "user.permissions",
-    "fieldLabel": "permissionsLabel",
-    "fieldType": "multiple-select",
+    "name": "user.permissions",
+    "labelKey": "permissionsLabel",
+    "type": "multiple-select",
     "options": [
       "edit-customer",
       "view-customer",
@@ -62,9 +62,9 @@
     ]
   },
   {
-    "fieldName": "createUserButton",
-    "fieldLabel": "createUserButtonLabel",
-    "fieldType": "button",
+    "name": "createUserButton",
+    "labelKey": "createUserButtonLabel",
+    "type": "button",
     "function": "/user/save"
   }
 ]

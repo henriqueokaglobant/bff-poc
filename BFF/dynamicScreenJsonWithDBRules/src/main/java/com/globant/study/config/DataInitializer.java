@@ -83,7 +83,7 @@ public class DataInitializer implements ApplicationListener<ApplicationReadyEven
                 List<ScreenComponentEntity> screenComponentEntityListForTemplate = objectMapper.readValue(fileContent, new TypeReference<List<ScreenComponentEntity>>() {
                 });
                 screenComponentEntityListForTemplate.forEach(dto -> {
-                    dto.setTemplateName(resourceFile.replace(".json", ""));
+                    dto.setTemplate(resourceFile.replace(".json", ""));
                 });
                 screenComponentDTOList.addAll(screenComponentEntityListForTemplate);
             } catch (IOException e) {

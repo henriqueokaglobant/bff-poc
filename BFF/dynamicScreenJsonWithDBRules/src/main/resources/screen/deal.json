@@ -1,23 +1,23 @@
 [
   {
-    "fieldName": "dealId",
-    "fieldLabel": "Deal ID",
-    "fieldType": "textbox"
+    "name": "deal.id",
+    "labelKey": "idLabel",
+    "type": "textbox"
   },
   {
-    "fieldName": "company",
-    "fieldLabel": "Company",
-    "fieldType": "textbox"
+    "name": "deal.company",
+    "labelKey": "companyLabel",
+    "type": "textbox"
   },
   {
-    "fieldName": "value",
-    "fieldLabel": "Value",
-    "fieldType": "numberfield"
+    "name": "deal.value",
+    "labelKey": "valueLabel",
+    "type": "numberfield"
   },
   {
-    "fieldName": "createDealButton",
-    "fieldLabel": "Save",
-    "fieldType": "button",
+    "name": "createDealButton",
+    "labelKey": "createDealButtonLabel",
+    "type": "button",
     "function": "/deal/save"
   }
 ]
