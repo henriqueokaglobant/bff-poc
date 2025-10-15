@@ -1,6 +1,6 @@
 package com.globant.study.controller;
 
-import com.globant.study.dto.ScreenComponentDTO;
+import com.globant.study.dto.ComponentDTO;
 import com.globant.study.service.DynamicScreenService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,7 +18,7 @@ public class DynamicScreenController {
     DynamicScreenService dynamicScreenService;
 
     @GetMapping("/screen")
-    public List<ScreenComponentDTO> getScreenJson(@RequestParam String template, @RequestParam String user) {
+    public List<ComponentDTO> getScreenJson(@RequestParam String template, @RequestParam String user) {
         return dynamicScreenService.calculateScreenJson(template, user);
     }
 }

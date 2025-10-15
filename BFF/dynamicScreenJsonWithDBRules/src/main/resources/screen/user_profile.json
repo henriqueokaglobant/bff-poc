@@ -3,14 +3,12 @@
     "name": "person.firstName",
     "labelKey": "firstNameLabel",
     "type": "textbox",
-    "includeByDefault": true,
     "style": "width:80px; align:right"
   },
   {
     "name": "person.lastName",
     "labelKey": "lastNameLabel",
-    "type": "textbox",
-    "includeByDefault": true
+    "type": "textbox"
   },
   {
     "name": "person.document",
@@ -31,29 +29,30 @@
     "name": "company.licenseNumber",
     "labelKey": "licenseNumberLabel",
     "type": "textbox",
-    "includeByDefault": false
+    "excludeByDefault": true
   },
   {
     "name": "company.supportNumber",
     "labelKey": "supportNumberLabel",
     "type": "numberfield",
-    "includeByDefault": false
+    "excludeByDefault": true
   },
   {
     "name": "company.document",
     "labelKey": "documentLabel",
-    "type": "numberfield",
-    "includeByDefault": false
+    "type": "numberfield"
   },
   {
     "name": "user.isAdmin",
     "labelKey": "isAdminLabel",
-    "type": "checkbox"
+    "type": "checkbox",
+    "excludeByDefault": true
   },
   {
     "name": "user.permissions",
     "labelKey": "permissionsLabel",
     "type": "multiple-select",
+    "excludeByDefault": true,
     "options": [
       "edit-customer",
       "view-customer",

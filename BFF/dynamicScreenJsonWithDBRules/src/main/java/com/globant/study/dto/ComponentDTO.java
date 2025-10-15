@@ -2,7 +2,7 @@ package com.globant.study.dto;
 
 import java.util.List;
 
-public class ScreenComponentDTO {
+public class ComponentDTO {
 
     String template;
     String name;
@@ -10,7 +10,7 @@ public class ScreenComponentDTO {
     String type;
     String function;
     String style;
-    Boolean includeByDefault = false;
+    Boolean excludeByDefault = false;
     Integer orderPriority;
     List<String> options;
 
@@ -66,12 +66,12 @@ public class ScreenComponentDTO {
         this.style = style;
     }
 
-    public Boolean getIncludeByDefault() {
-        return includeByDefault;
+    public Boolean getExcludeByDefault() {
+        return excludeByDefault;
     }
 
-    public void setIncludeByDefault(Boolean includeByDefault) {
-        this.includeByDefault = includeByDefault;
+    public void setExcludeByDefault(Boolean excludeByDefault) {
+        this.excludeByDefault = excludeByDefault;
     }
 
     public Integer getOrderPriority() {
@@ -108,14 +108,14 @@ public class ScreenComponentDTO {
 
     @Override
     public String toString() {
-        return "ScreenComponentDTO{" +
-                "templateName='" + template + '\'' +
-                ", fieldName='" + name + '\'' +
-                ", fieldLabel='" + labelKey + '\'' +
-                ", fieldType='" + type + '\'' +
+        return "ComponentDTO{" +
+                "template='" + template + '\'' +
+                ", name='" + name + '\'' +
+                ", labelKey='" + labelKey + '\'' +
+                ", type='" + type + '\'' +
                 ", function='" + function + '\'' +
                 ", style='" + style + '\'' +
-                ", includeByDefault=" + includeByDefault +
+                ", excludeByDefault=" + excludeByDefault +
                 ", orderPriority=" + orderPriority +
                 ", options=" + options +
                 ", label='" + label + '\'' +

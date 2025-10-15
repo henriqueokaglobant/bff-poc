@@ -3,14 +3,12 @@
     "name": "person.firstName",
     "labelKey": "firstNameLabel",
     "type": "textbox",
-    "includeByDefault": true,
     "style": "width:80px; align:right"
   },
   {
     "name": "person.lastName",
     "labelKey": "lastNameLabel",
-    "type": "textbox",
-    "includeByDefault": true
+    "type": "textbox"
   },
   {
     "name": "person.document",

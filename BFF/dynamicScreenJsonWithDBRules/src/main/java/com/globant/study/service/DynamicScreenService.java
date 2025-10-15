@@ -3,20 +3,19 @@ package com.globant.study.service;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.globant.study.dto.ScreenComponentDTO;
+import com.globant.study.dto.ComponentDTO;
 import com.globant.study.entity.LocalizationEntity;
 import com.globant.study.entity.RuleEntity;
-import com.globant.study.entity.ScreenComponentEntity;
+import com.globant.study.entity.ComponentEntity;
 import com.globant.study.repository.LocalizationRepository;
 import com.globant.study.repository.RuleRepository;
-import com.globant.study.repository.ScreenComponentRepository;
+import com.globant.study.repository.ComponentRepository;
 import com.globant.study.utils.Utils;
 import org.apache.commons.lang3.BooleanUtils;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ResourceUtils;
@@ -38,7 +37,7 @@ public class DynamicScreenService {
     private RuleRepository ruleRepository;
 
     @Autowired
-    private ScreenComponentRepository screenComponentRepository;
+    private ComponentRepository screenComponentRepository;
 
     @Autowired
     private LocalizationRepository localizationRepository;
@@ -64,44 +63,44 @@ public class DynamicScreenService {
     @Value("#{${localizationInFile}}")
     private Boolean localizationInFile;
 
-    @Cacheable(value = "calculateScreenJson")
-    public List<ScreenComponentDTO> calculateScreenJson(String template, String user) {
+//    @Cacheable(value = "calculateScreenJson")
+    public List<ComponentDTO> calculateScreenJson(String template, String user) {
         String license = getLicenseFromUser(user);
         String role = getRoleFromUser(user);
         Locale locale = getLocaleFromUser(user);
-        List<ScreenComponentDTO> screenComponentDTOList = jsonDataInFile ? readScreenDTOFromFile(template) : readScreenDTOFromDB(template);
+        List<ComponentDTO> componentDTOList = jsonDataInFile ? readScreenDTOFromFile(template) : readScreenDTOFromDB(template);
         List<RuleEntity> ruleEntityList = new ArrayList<>();
         // Gather rules
         ruleEntityList.addAll(filterOutByPropertyRules(template, "license", license));
         ruleEntityList.addAll(filterOutByPropertyRules(template, "role", role));
         // Apply rules (basically it's setting the include flag)
-        applyRules(screenComponentDTOList, ruleEntityList, locale);
-        logResultData(screenComponentDTOList);
+        applyRules(componentDTOList, ruleEntityList, locale);
+        logResultData(componentDTOList);
         // Return filtered data: only elements which are supposed to be included
-        return screenComponentDTOList.stream().filter(ScreenComponentDTO::getInclude).toList();
+        return componentDTOList.stream().filter(ComponentDTO::getInclude).toList();
     }
 
-    private List<ScreenComponentDTO> readScreenDTOFromFile(String template) {
-        List<ScreenComponentDTO> screenComponentDTOList = new ArrayList<>();
+    private List<ComponentDTO> readScreenDTOFromFile(String template) {
+        List<ComponentDTO> componentDTOList = new ArrayList<>();
         ObjectMapper objectMapper = new ObjectMapper();
         objectMapper.configure(JsonParser.Feature.INCLUDE_SOURCE_IN_LOCATION, true);
         try (InputStream in = new FileInputStream(ResourceUtils.getFile("classpath:screen/" + template + ".json"))) {
             String fileContent = new String(in.readAllBytes(), StandardCharsets.UTF_8);
-            screenComponentDTOList = objectMapper.readValue(fileContent, new TypeReference<List<ScreenComponentDTO>>() {
+            componentDTOList = objectMapper.readValue(fileContent, new TypeReference<List<ComponentDTO>>() {
             });
         } catch (IOException e) {
             LOGGER.severe(e.getMessage());
         }
-        screenComponentDTOList.forEach(dto -> {
+        componentDTOList.forEach(dto -> {
             dto.setTemplate(template);
         });
-        return screenComponentDTOList;
+        return componentDTOList;
     }
 
-    private List<ScreenComponentDTO> readScreenDTOFromDB(String template) {
+    private List<ComponentDTO> readScreenDTOFromDB(String template) {
         ModelMapper modelMapper = new ModelMapper();
-        List<ScreenComponentEntity> screenComponentEntityList = screenComponentRepository.findByTemplate(template);
-        return modelMapper.map(screenComponentEntityList, new TypeToken<List<ScreenComponentDTO>>() {
+        List<ComponentEntity> componentEntityList = screenComponentRepository.findByTemplate(template);
+        return modelMapper.map(componentEntityList, new TypeToken<List<ComponentDTO>>() {
         }.getType());
     }
 
@@ -112,20 +111,20 @@ public class DynamicScreenService {
         return ruleEntityList;
     }
 
-    private void applyRules(List<ScreenComponentDTO> screenComponentDTOList, List<RuleEntity> ruleEntityList, Locale locale) {
-        screenComponentDTOList.forEach(dto -> {
-            boolean isIncludedByDefault = dto.getIncludeByDefault();
-            boolean hasInclusionRule = ruleEntityList.stream().anyMatch(r -> dto.getName().equals(r.getComponentName()) && r.getInclude());
-            boolean hasExclusionRule = ruleEntityList.stream().anyMatch(r -> dto.getName().equals(r.getComponentName()) && !r.getInclude());
+    private void applyRules(List<ComponentDTO> componentDTOList, List<RuleEntity> ruleEntityList, Locale locale) {
+        componentDTOList.forEach(dto -> {
+            boolean isExcludedByDefault = dto.getExcludeByDefault();
+            boolean hasInclusionRule = ruleEntityList.stream().anyMatch(r -> dto.getName().equals(r.getComponentName()) && BooleanUtils.isTrue(r.getInclude()));
+            boolean hasExclusionRule = ruleEntityList.stream().anyMatch(r -> dto.getName().equals(r.getComponentName()) && BooleanUtils.isFalse(r.getInclude()));
             Integer orderPriority =   ruleEntityList.stream().filter(r -> dto.getName().equals(r.getComponentName())).findFirst().map(RuleEntity::getOrderPriority).orElse(null);
-            // must be included either by default or by rules, exclusion will override any kind of inclusion
-            dto.setInclude((isIncludedByDefault || hasInclusionRule) && !hasExclusionRule);
+            // must be included either by default or by rules, rule should override default settings
+            dto.setInclude(!(isExcludedByDefault || hasExclusionRule) || hasInclusionRule);
             dto.setOrderPriority(orderPriority);
 
             String label = localizationInFile ? messageSource.getMessage(dto.getLabelKey(), null, locale) : localizationRepository.findByLocaleAndMessageKey(locale.toString(), dto.getLabelKey()).map(LocalizationEntity::getMessageValue).orElse("");
             dto.setLabel(label);
         });
-        screenComponentDTOList.sort(Comparator.comparing(ScreenComponentDTO::getOrderPriority, Comparator.nullsLast(Comparator.naturalOrder())));
+        componentDTOList.sort(Comparator.comparing(ComponentDTO::getOrderPriority, Comparator.nullsLast(Comparator.naturalOrder())));
     }
 
     private String getLicenseFromUser(String user) {
@@ -148,9 +147,9 @@ public class DynamicScreenService {
         return locale;
     }
 
-    private void logResultData(List<ScreenComponentDTO> screenComponentDTOList) {
+    private void logResultData(List<ComponentDTO> componentDTOList) {
         StringBuffer logResult = new StringBuffer("\n=====FILTERED LIST:=====\n");
-        screenComponentDTOList.forEach(dto -> {
+        componentDTOList.forEach(dto -> {
             if (dto.getInclude()) {
                 logResult.append(Utils.green(dto.toString())).append("\n");
             } else {

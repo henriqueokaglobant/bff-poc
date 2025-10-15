@@ -5,10 +5,10 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.globant.study.entity.LocalizationEntity;
 import com.globant.study.entity.RuleEntity;
-import com.globant.study.entity.ScreenComponentEntity;
+import com.globant.study.entity.ComponentEntity;
 import com.globant.study.repository.LocalizationRepository;
 import com.globant.study.repository.RuleRepository;
-import com.globant.study.repository.ScreenComponentRepository;
+import com.globant.study.repository.ComponentRepository;
 import com.globant.study.utils.Utils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
@@ -41,7 +41,7 @@ public class DataInitializer implements ApplicationListener<ApplicationReadyEven
     private LocalizationRepository localizationRepository;
 
     @Autowired
-    private ScreenComponentRepository screenComponentRepository;
+    private ComponentRepository screenComponentRepository;
 
     @Autowired
     private ResourceBundleMessageSource messageSource;
@@ -56,39 +56,47 @@ public class DataInitializer implements ApplicationListener<ApplicationReadyEven
     private void initializeRuleData() {
         boolean include = true;
         boolean exclude = false;
-        ruleRepository.save(createRule("user_profile", "license", "enterprise", "company.document", include, 1));
-        ruleRepository.save(createRule("user_profile", "license", "free", "user.document", include, null));
-        ruleRepository.save(createRule("user_profile", "license", "free", "company.licenseNumber", exclude, null));
+
+        ruleRepository.save(createRule("user_profile", "license", "enterprise", "company.document", include, null));
+        ruleRepository.save(createRule("user_profile", "license", "enterprise", "person.document", exclude, null));
+        ruleRepository.save(createRule("user_profile", "license", "enterprise", "person.address", exclude, null));
+        ruleRepository.save(createRule("user_profile", "license", "enterprise", "person.address.zipcode", exclude, null));
         ruleRepository.save(createRule("user_profile", "role", "admin", "company.supportNumber", include, null));
-        ruleRepository.save(createRule("user_profile", "role", "support", "user.isAdmin", include, null));
-        ruleRepository.save(createRule("user_profile", "role", "support", "user.permissions", exclude, null));
-        ruleRepository.save(createRule("customer_onboarding", "role", "support", "user.permissions", include, null));
+        ruleRepository.save(createRule("user_profile", "role", "admin", "user.isAdmin", include, 2));
+        ruleRepository.save(createRule("user_profile", "role", "admin", "user.permissions", include, 2));
+        ruleRepository.save(createRule("user_profile", "role", "admin", "createUserButton", null, 1));
+
+//        ruleRepository.save(createRule("user_profile", "license", "free", "user.document", include, null));
+//        ruleRepository.save(createRule("user_profile", "license", "free", "company.licenseNumber", exclude, null));
+//        ruleRepository.save(createRule("user_profile", "role", "support", "user.isAdmin", include, null));
+//        ruleRepository.save(createRule("user_profile", "role", "support", "user.permissions", exclude, null));
+//        ruleRepository.save(createRule("customer_onboarding", "role", "support", "user.permissions", include, null));
         LOGGER.info(Utils.green("Initial RULE data inserted into the database."));
     }
 
     private void initializeJsonComponentData() {
         try {
-            List<ScreenComponentEntity> screenComponentEntityList = readScreenComponentFromFile();
-            screenComponentRepository.saveAll(screenComponentEntityList);
+            List<ComponentEntity> componentEntityList = readScreenComponentFromFile();
+            screenComponentRepository.saveAll(componentEntityList);
             LOGGER.info(Utils.green("Initial JSON COMPONENT data inserted into the database."));
         } catch (IOException e) {
             LOGGER.info(Utils.red("Failed to initialize JSON COMPONENT data."));
         }
     }
 
-    private List<ScreenComponentEntity> readScreenComponentFromFile() throws IOException {
-        List<ScreenComponentEntity> screenComponentDTOList = new ArrayList<>();
+    private List<ComponentEntity> readScreenComponentFromFile() throws IOException {
+        List<ComponentEntity> screenComponentDTOList = new ArrayList<>();
         ObjectMapper objectMapper = new ObjectMapper();
         objectMapper.configure(JsonParser.Feature.INCLUDE_SOURCE_IN_LOCATION, true);
         for (String resourceFile : getResourceFiles("classpath:screen/*.json")) {
             try (InputStream in = new FileInputStream(ResourceUtils.getFile("classpath:screen/" + resourceFile))) {
                 String fileContent = new String(in.readAllBytes(), StandardCharsets.UTF_8);
-                List<ScreenComponentEntity> screenComponentEntityListForTemplate = objectMapper.readValue(fileContent, new TypeReference<List<ScreenComponentEntity>>() {
+                List<ComponentEntity> componentEntityListForTemplate = objectMapper.readValue(fileContent, new TypeReference<List<ComponentEntity>>() {
                 });
-                screenComponentEntityListForTemplate.forEach(dto -> {
+                componentEntityListForTemplate.forEach(dto -> {
                     dto.setTemplate(resourceFile.replace(".json", ""));
                 });
-                screenComponentDTOList.addAll(screenComponentEntityListForTemplate);
+                screenComponentDTOList.addAll(componentEntityListForTemplate);
             } catch (IOException e) {
                 LOGGER.severe(e.getMessage());
             }
@@ -107,7 +115,7 @@ public class DataInitializer implements ApplicationListener<ApplicationReadyEven
         return fileNames;
     }
 
-    private RuleEntity createRule(String template, String propertyName, String propertyValue, String jsonContent, boolean include, Integer orderPriority) {
+    private RuleEntity createRule(String template, String propertyName, String propertyValue, String jsonContent, Boolean include, Integer orderPriority) {
         RuleEntity rule = new RuleEntity();
         rule.setTemplate(template);
         rule.setPropertyName(propertyName);

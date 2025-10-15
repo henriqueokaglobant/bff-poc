@@ -8,7 +8,7 @@ import jakarta.persistence.Id;
 import java.util.List;
 
 @Entity
-public class ScreenComponentEntity {
+public class ComponentEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -19,7 +19,7 @@ public class ScreenComponentEntity {
     String type;
     String function;
     String style;
-    Boolean includeByDefault = false;
+    Boolean excludeByDefault = false;
     List<Integer> position;
     List<String> options;
 
@@ -71,12 +71,12 @@ public class ScreenComponentEntity {
         this.function = function;
     }
 
-    public Boolean getIncludeByDefault() {
-        return includeByDefault;
+    public Boolean getExcludeByDefault() {
+        return excludeByDefault;
     }
 
-    public void setIncludeByDefault(Boolean includeByDefault) {
-        this.includeByDefault = includeByDefault;
+    public void setExcludeByDefault(Boolean excludeByDefault) {
+        this.excludeByDefault = excludeByDefault;
     }
 
     public List<Integer> getPosition() {
