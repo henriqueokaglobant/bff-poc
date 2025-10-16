@@ -1,6 +1,7 @@
 package com.globant.study.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.globant.study.utils.Utils;
 
 import java.util.List;
 
@@ -9,9 +10,11 @@ public class ComponentDTO {
     String template;
     String name;
     String labelKey;
+    String label; // Calculate field
     String type;
     String function;
     String style;
+    Boolean include = false; // Calculate field
     Boolean excludeByDefault = false;
     Integer orderPriority;
     List<ComponentDTO> options;
@@ -19,9 +22,6 @@ public class ComponentDTO {
     @JsonIgnore
     ComponentDTO parentComponent;
 
-    // Calculated fields
-    String label;
-    Boolean include = false;
 
     public String getTemplate() {
         return template;
@@ -121,18 +121,24 @@ public class ComponentDTO {
 
     @Override
     public String toString() {
-        return "ComponentDTO{" +
+        String componentString = "ComponentDTO{" +
                 "template='" + template + '\'' +
                 ", name='" + name + '\'' +
                 ", labelKey='" + labelKey + '\'' +
+                ", label='" + label + '\'' +
                 ", type='" + type + '\'' +
                 ", function='" + function + '\'' +
                 ", style='" + style + '\'' +
+                ", include=" + include +
                 ", excludeByDefault=" + excludeByDefault +
                 ", orderPriority=" + orderPriority +
                 ", options=" + options +
-                ", label='" + label + '\'' +
-                ", include=" + include +
                 '}';
+
+        if (this.getInclude() && (this.getParentComponent() == null || this.getParentComponent().include)) {
+            return Utils.greenNoReset(componentString);
+        } else {
+            return Utils.redNoReset(componentString);
+        }
     }
 }

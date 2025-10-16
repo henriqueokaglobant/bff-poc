@@ -11,30 +11,62 @@ public class Utils {
     public static final String ANSI_WHITE = "\u001B[37m";
 
     public static String red(String content) {
-        return ANSI_RED + content + ANSI_RESET;
+        return redNoReset(content) + ANSI_RESET;
+    }
+
+    public static String redNoReset(String content) {
+        return ANSI_RED + content;
     }
 
     public static String green(String content) {
-        return ANSI_GREEN + content + ANSI_RESET;
+        return greenNoReset(content) + ANSI_RESET;
+    }
+
+    public static String greenNoReset(String content) {
+        return ANSI_GREEN + content;
     }
 
     public static String yellow(String content) {
-        return ANSI_YELLOW + content + ANSI_RESET;
+        return yellowNoReset(content) + ANSI_RESET;
+    }
+
+    public static String yellowNoReset(String content) {
+        return ANSI_YELLOW + content;
     }
 
     public static String blue(String content) {
-        return ANSI_BLUE + content + ANSI_RESET;
+        return blueNoReset(content) + ANSI_RESET;
+    }
+
+    public static String blueNoReset(String content) {
+        return ANSI_BLUE + content;
     }
 
     public static String magenta(String content) {
-        return ANSI_MAGENTA + content + ANSI_RESET;
+        return magentaNoReset(content) + ANSI_RESET;
+    }
+
+    public static String magentaNoReset(String content) {
+        return ANSI_MAGENTA + content;
     }
 
     public static String cyan(String content) {
-        return ANSI_CYAN + content + ANSI_RESET;
+        return cyanNoReset(content) + ANSI_RESET;
+    }
+
+    public static String cyanNoReset(String content) {
+        return ANSI_CYAN + content;
     }
 
     public static String white(String content) {
-        return ANSI_WHITE + content + ANSI_RESET;
+        return whiteNoReset(content) + ANSI_RESET;
+    }
+
+    public static String whiteNoReset(String content) {
+        return ANSI_WHITE + content;
+    }
+
+    public static String resetColor(String content) {
+        return content + ANSI_RESET;
     }
 }

@@ -43,6 +43,28 @@
     "type": "numberfield"
   },
   {
+    "name": "company.type",
+    "labelKey": "documentLabel",
+    "type": "radio",
+    "options": [
+      {
+        "name": "company.type.options.contractor",
+        "labelKey": "contractorLabel",
+        "type": "option"
+      },
+      {
+        "name": "company.type.options.client",
+        "labelKey": "clientLabel",
+        "type": "option"
+      },
+      {
+        "name": "company.type.options.partner",
+        "labelKey": "partnerLabel",
+        "type": "option"
+      }
+    ]
+  },
+  {
     "name": "user.isAdmin",
     "labelKey": "isAdminLabel",
     "type": "checkbox",
@@ -68,8 +90,7 @@
       {
         "name": "user.permissions.options.editDeal",
         "labelKey": "editDealLabel",
-        "type": "option",
-        "excludeByDefault": true
+        "type": "option"
       },
       {
         "name": "user.permissions.options.viewDeal",

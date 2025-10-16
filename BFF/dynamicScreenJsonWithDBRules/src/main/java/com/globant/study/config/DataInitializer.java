@@ -61,16 +61,21 @@ public class DataInitializer implements ApplicationListener<ApplicationReadyEven
         ruleRepository.save(createRule("user_profile", "license", "enterprise", "person.document", exclude, null));
         ruleRepository.save(createRule("user_profile", "license", "enterprise", "person.address", exclude, null));
         ruleRepository.save(createRule("user_profile", "license", "enterprise", "person.address.zipcode", exclude, null));
+
         ruleRepository.save(createRule("user_profile", "role", "admin", "company.supportNumber", include, null));
         ruleRepository.save(createRule("user_profile", "role", "admin", "user.isAdmin", include, 2));
         ruleRepository.save(createRule("user_profile", "role", "admin", "user.permissions", include, 2));
         ruleRepository.save(createRule("user_profile", "role", "admin", "createUserButton", null, 1));
 
-//        ruleRepository.save(createRule("user_profile", "license", "free", "user.document", include, null));
-//        ruleRepository.save(createRule("user_profile", "license", "free", "company.licenseNumber", exclude, null));
-//        ruleRepository.save(createRule("user_profile", "role", "support", "user.isAdmin", include, null));
-//        ruleRepository.save(createRule("user_profile", "role", "support", "user.permissions", exclude, null));
-//        ruleRepository.save(createRule("customer_onboarding", "role", "support", "user.permissions", include, null));
+        ruleRepository.save(createRule("user_profile", "role", "support", "company.type.options.contractor", exclude, null));
+
+        ruleRepository.save(createRule("user_profile", "license", "free", "user.document", include, null));
+        ruleRepository.save(createRule("user_profile", "license", "free", "company.licenseNumber", exclude, null));
+
+        ruleRepository.save(createRule("user_profile", "role", "support", "user.isAdmin", include, null));
+        ruleRepository.save(createRule("user_profile", "role", "support", "user.permissions", exclude, null));
+
+        ruleRepository.save(createRule("customer_onboarding", "role", "support", "user.permissions", include, null));
         LOGGER.info(Utils.green("Initial RULE data inserted into the database."));
     }
 

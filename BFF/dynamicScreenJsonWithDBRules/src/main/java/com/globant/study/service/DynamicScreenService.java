@@ -37,7 +37,7 @@ public class DynamicScreenService {
     private RuleRepository ruleRepository;
 
     @Autowired
-    private ComponentRepository screenComponentRepository;
+    private ComponentRepository componentRepository;
 
     @Autowired
     private LocalizationRepository localizationRepository;
@@ -100,7 +100,7 @@ public class DynamicScreenService {
 
     private List<ComponentDTO> readScreenDTOFromDB(String template) {
         ModelMapper modelMapper = new ModelMapper();
-        List<ComponentEntity> componentEntityList = screenComponentRepository.findByTemplate(template);
+        List<ComponentEntity> componentEntityList = componentRepository.findByTemplate(template);
         return modelMapper.map(componentEntityList, new TypeToken<List<ComponentDTO>>() {
         }.getType());
     }
@@ -150,17 +150,11 @@ public class DynamicScreenService {
         return locale;
     }
 
-    /**
-     * Logging the elements with color for easy debugging (only applies to the first level and not children)
-     */
     private void logResultData(List<ComponentDTO> componentDTOList) {
         StringBuffer logResult = new StringBuffer("\n=====FILTERED LIST:=====\n");
+        ObjectMapper objectMapper = new ObjectMapper();
         componentDTOList.forEach(dto -> {
-            if (dto.getInclude()) {
-                logResult.append(Utils.green(dto.toString())).append("\n");
-            } else {
-                logResult.append(Utils.red(dto.toString())).append("\n");
-            }
+            logResult.append(Utils.resetColor(dto.toString())).append("\n");
         });
         LOGGER.info(logResult.toString());
     }
