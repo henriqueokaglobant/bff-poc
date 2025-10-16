@@ -1,5 +1,7 @@
 package com.globant.study.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.util.List;
 
 public class ComponentDTO {
@@ -12,7 +14,10 @@ public class ComponentDTO {
     String style;
     Boolean excludeByDefault = false;
     Integer orderPriority;
-    List<String> options;
+    List<ComponentDTO> options;
+
+    @JsonIgnore
+    ComponentDTO parentComponent;
 
     // Calculated fields
     String label;
@@ -82,12 +87,20 @@ public class ComponentDTO {
         this.orderPriority = orderPriority;
     }
 
-    public List<String> getOptions() {
+    public List<ComponentDTO> getOptions() {
         return options;
     }
 
-    public void setOptions(List<String> options) {
+    public void setOptions(List<ComponentDTO> options) {
         this.options = options;
+    }
+
+    public ComponentDTO getParentComponent() {
+        return parentComponent;
+    }
+
+    public void setParentComponent(ComponentDTO parentComponent) {
+        this.parentComponent = parentComponent;
     }
 
     public String getLabel() {

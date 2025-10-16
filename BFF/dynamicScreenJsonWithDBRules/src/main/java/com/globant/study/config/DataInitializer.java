@@ -101,6 +101,9 @@ public class DataInitializer implements ApplicationListener<ApplicationReadyEven
                 LOGGER.severe(e.getMessage());
             }
         }
+        screenComponentDTOList.forEach(dto -> {
+            dto.getOptions().forEach(opt -> opt.setParentComponent(dto));
+        });
         return screenComponentDTOList;
     }
 

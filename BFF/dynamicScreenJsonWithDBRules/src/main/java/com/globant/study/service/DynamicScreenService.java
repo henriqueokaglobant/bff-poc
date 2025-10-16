@@ -63,7 +63,7 @@ public class DynamicScreenService {
     @Value("#{${localizationInFile}}")
     private Boolean localizationInFile;
 
-//    @Cacheable(value = "calculateScreenJson")
+    //    @Cacheable(value = "calculateScreenJson")
     public List<ComponentDTO> calculateScreenJson(String template, String user) {
         String license = getLicenseFromUser(user);
         String role = getRoleFromUser(user);
@@ -73,11 +73,11 @@ public class DynamicScreenService {
         // Gather rules
         ruleEntityList.addAll(filterOutByPropertyRules(template, "license", license));
         ruleEntityList.addAll(filterOutByPropertyRules(template, "role", role));
-        // Apply rules (basically it's setting the include flag)
+        // Apply rules (sets some fields like 'include' and 'label' with calculated data)
         applyRules(componentDTOList, ruleEntityList, locale);
         logResultData(componentDTOList);
         // Return filtered data: only elements which are supposed to be included
-        return componentDTOList.stream().filter(ComponentDTO::getInclude).toList();
+        return filterComponents(componentDTOList);
     }
 
     private List<ComponentDTO> readScreenDTOFromFile(String template) {
@@ -91,6 +91,7 @@ public class DynamicScreenService {
         } catch (IOException e) {
             LOGGER.severe(e.getMessage());
         }
+        // Adding the file/template because this is a field not present in the json
         componentDTOList.forEach(dto -> {
             dto.setTemplate(template);
         });
@@ -116,13 +117,15 @@ public class DynamicScreenService {
             boolean isExcludedByDefault = dto.getExcludeByDefault();
             boolean hasInclusionRule = ruleEntityList.stream().anyMatch(r -> dto.getName().equals(r.getComponentName()) && BooleanUtils.isTrue(r.getInclude()));
             boolean hasExclusionRule = ruleEntityList.stream().anyMatch(r -> dto.getName().equals(r.getComponentName()) && BooleanUtils.isFalse(r.getInclude()));
-            Integer orderPriority =   ruleEntityList.stream().filter(r -> dto.getName().equals(r.getComponentName())).findFirst().map(RuleEntity::getOrderPriority).orElse(null);
+            Integer orderPriority = ruleEntityList.stream().filter(r -> dto.getName().equals(r.getComponentName())).findFirst().map(RuleEntity::getOrderPriority).orElse(null);
             // must be included either by default or by rules, rule should override default settings
             dto.setInclude(!(isExcludedByDefault || hasExclusionRule) || hasInclusionRule);
             dto.setOrderPriority(orderPriority);
 
             String label = localizationInFile ? messageSource.getMessage(dto.getLabelKey(), null, locale) : localizationRepository.findByLocaleAndMessageKey(locale.toString(), dto.getLabelKey()).map(LocalizationEntity::getMessageValue).orElse("");
             dto.setLabel(label);
+            // Also applying rules to the child elements
+            applyRules(dto.getOptions(), ruleEntityList, locale);
         });
         componentDTOList.sort(Comparator.comparing(ComponentDTO::getOrderPriority, Comparator.nullsLast(Comparator.naturalOrder())));
     }
@@ -147,6 +150,9 @@ public class DynamicScreenService {
         return locale;
     }
 
+    /**
+     * Logging the elements with color for easy debugging (only applies to the first level and not children)
+     */
     private void logResultData(List<ComponentDTO> componentDTOList) {
         StringBuffer logResult = new StringBuffer("\n=====FILTERED LIST:=====\n");
         componentDTOList.forEach(dto -> {
@@ -157,5 +163,17 @@ public class DynamicScreenService {
             }
         });
         LOGGER.info(logResult.toString());
+    }
+
+    /**
+     * Return the list of components that has include=true, applied to all of the levels
+     */
+    private List<ComponentDTO> filterComponents(List<ComponentDTO> componentDTOList) {
+        List<ComponentDTO> result = new ArrayList<>();
+        result = componentDTOList.stream().filter(ComponentDTO::getInclude).toList();
+        result.forEach(dto -> {
+            dto.setOptions(filterComponents(dto.getOptions()));
+        });
+        return result;
     }
 }

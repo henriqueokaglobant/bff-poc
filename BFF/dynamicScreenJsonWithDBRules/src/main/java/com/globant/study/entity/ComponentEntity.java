@@ -1,10 +1,8 @@
 package com.globant.study.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -21,7 +19,13 @@ public class ComponentEntity {
     String style;
     Boolean excludeByDefault = false;
     List<Integer> position;
-    List<String> options;
+
+    @OneToMany(mappedBy = "parentComponent", cascade = CascadeType.ALL, orphanRemoval = true)
+    List<ComponentEntity> options = new ArrayList<>();
+
+    @ManyToOne(fetch = FetchType.EAGER) // Should always come populated
+    @JoinColumn(name = "parent_component_id")
+    ComponentEntity parentComponent;
 
     public Integer getId() {
         return id;
@@ -71,6 +75,14 @@ public class ComponentEntity {
         this.function = function;
     }
 
+    public String getStyle() {
+        return style;
+    }
+
+    public void setStyle(String style) {
+        this.style = style;
+    }
+
     public Boolean getExcludeByDefault() {
         return excludeByDefault;
     }
@@ -87,19 +99,19 @@ public class ComponentEntity {
         this.position = position;
     }
 
-    public List<String> getOptions() {
+    public List<ComponentEntity> getOptions() {
         return options;
     }
 
-    public void setOptions(List<String> options) {
+    public void setOptions(List<ComponentEntity> options) {
         this.options = options;
     }
 
-    public String getStyle() {
-        return style;
+    public ComponentEntity getParentComponent() {
+        return parentComponent;
     }
 
-    public void setStyle(String style) {
-        this.style = style;
+    public void setParentComponent(ComponentEntity parentComponent) {
+        this.parentComponent = parentComponent;
     }
 }

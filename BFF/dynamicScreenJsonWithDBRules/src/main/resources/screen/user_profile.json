@@ -54,10 +54,28 @@
     "type": "multiple-select",
     "excludeByDefault": true,
     "options": [
-      "edit-customer",
-      "view-customer",
-      "edit-deal",
-      "view-deal"
+      {
+        "name": "user.permissions.options.editCustomer",
+        "labelKey": "editCustomerLabel",
+        "type": "option",
+        "excludeByDefault": true
+      },
+      {
+        "name": "user.permissions.options.viewCustomer",
+        "labelKey": "viewCustomerLabel",
+        "type": "option"
+      },
+      {
+        "name": "user.permissions.options.editDeal",
+        "labelKey": "editDealLabel",
+        "type": "option",
+        "excludeByDefault": true
+      },
+      {
+        "name": "user.permissions.options.viewDeal",
+        "labelKey": "viewDealLabel",
+        "type": "option"
+      }
     ]
   },
   {

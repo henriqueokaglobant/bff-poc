@@ -28,12 +28,7 @@
   {
     "name": "notification.type",
     "labelKey": "notificationTypeLabel",
-    "type": "radio",
-    "options": [
-      "email",
-      "sms",
-      "letter"
-    ]
+    "type": "radio"
   },
   {
     "name": "notification.email",
