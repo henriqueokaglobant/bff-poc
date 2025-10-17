@@ -1,8 +1,9 @@
 package com.globant.study.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.globant.study.utils.Utils;
+import com.globant.study.entity.ComponentEntity;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class ComponentDTO {
@@ -17,11 +18,14 @@ public class ComponentDTO {
     Boolean include = false; // Calculate field
     Boolean excludeByDefault = false;
     Integer orderPriority;
-    List<ComponentDTO> options;
 
     @JsonIgnore
-    ComponentDTO parentComponent;
+    ComponentDTO optionParentComponent;
+    List<ComponentDTO> options = new ArrayList<>();
 
+    @JsonIgnore
+    ComponentEntity parentComponent;
+    List<ComponentDTO> children = new ArrayList<>();
 
     public String getTemplate() {
         return template;
@@ -45,6 +49,14 @@ public class ComponentDTO {
 
     public void setLabelKey(String labelKey) {
         this.labelKey = labelKey;
+    }
+
+    public String getLabel() {
+        return label;
+    }
+
+    public void setLabel(String label) {
+        this.label = label;
     }
 
     public String getType() {
@@ -71,6 +83,14 @@ public class ComponentDTO {
         this.style = style;
     }
 
+    public Boolean getInclude() {
+        return include;
+    }
+
+    public void setInclude(Boolean include) {
+        this.include = include;
+    }
+
     public Boolean getExcludeByDefault() {
         return excludeByDefault;
     }
@@ -87,6 +107,14 @@ public class ComponentDTO {
         this.orderPriority = orderPriority;
     }
 
+    public ComponentDTO getOptionParentComponent() {
+        return optionParentComponent;
+    }
+
+    public void setOptionParentComponent(ComponentDTO optionParentComponent) {
+        this.optionParentComponent = optionParentComponent;
+    }
+
     public List<ComponentDTO> getOptions() {
         return options;
     }
@@ -95,50 +123,27 @@ public class ComponentDTO {
         this.options = options;
     }
 
-    public ComponentDTO getParentComponent() {
+    public ComponentEntity getParentComponent() {
         return parentComponent;
     }
 
-    public void setParentComponent(ComponentDTO parentComponent) {
+    public void setParentComponent(ComponentEntity parentComponent) {
         this.parentComponent = parentComponent;
     }
 
-    public String getLabel() {
-        return label;
+    public List<ComponentDTO> getChildren() {
+        return children;
     }
 
-    public void setLabel(String label) {
-        this.label = label;
-    }
-
-    public Boolean getInclude() {
-        return include;
-    }
-
-    public void setInclude(Boolean include) {
-        this.include = include;
+    public void setChildren(List<ComponentDTO> children) {
+        this.children = children;
     }
 
     @Override
     public String toString() {
-        String componentString = "ComponentDTO{" +
-                "template='" + template + '\'' +
+        return "ComponentDTO{" +
+                "label='" + label + '\'' +
                 ", name='" + name + '\'' +
-                ", labelKey='" + labelKey + '\'' +
-                ", label='" + label + '\'' +
-                ", type='" + type + '\'' +
-                ", function='" + function + '\'' +
-                ", style='" + style + '\'' +
-                ", include=" + include +
-                ", excludeByDefault=" + excludeByDefault +
-                ", orderPriority=" + orderPriority +
-                ", options=" + options +
                 '}';
-
-        if (this.getInclude() && (this.getParentComponent() == null || this.getParentComponent().include)) {
-            return Utils.greenNoReset(componentString);
-        } else {
-            return Utils.redNoReset(componentString);
-        }
     }
 }

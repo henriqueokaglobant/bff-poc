@@ -90,26 +90,33 @@ public class DataInitializer implements ApplicationListener<ApplicationReadyEven
     }
 
     private List<ComponentEntity> readScreenComponentFromFile() throws IOException {
-        List<ComponentEntity> screenComponentDTOList = new ArrayList<>();
+        List<ComponentEntity> componentList = new ArrayList<>();
         ObjectMapper objectMapper = new ObjectMapper();
         objectMapper.configure(JsonParser.Feature.INCLUDE_SOURCE_IN_LOCATION, true);
         for (String resourceFile : getResourceFiles("classpath:screen/*.json")) {
             try (InputStream in = new FileInputStream(ResourceUtils.getFile("classpath:screen/" + resourceFile))) {
                 String fileContent = new String(in.readAllBytes(), StandardCharsets.UTF_8);
-                List<ComponentEntity> componentEntityListForTemplate = objectMapper.readValue(fileContent, new TypeReference<List<ComponentEntity>>() {
+                List<ComponentEntity> componentListForTemplate = objectMapper.readValue(fileContent, new TypeReference<List<ComponentEntity>>() {
                 });
-                componentEntityListForTemplate.forEach(dto -> {
+                componentListForTemplate.forEach(dto -> {
                     dto.setTemplate(resourceFile.replace(".json", ""));
                 });
-                screenComponentDTOList.addAll(componentEntityListForTemplate);
+                componentList.addAll(componentListForTemplate);
             } catch (IOException e) {
                 LOGGER.severe(e.getMessage());
             }
         }
-        screenComponentDTOList.forEach(dto -> {
-            dto.getOptions().forEach(opt -> opt.setParentComponent(dto));
+        fillParents(componentList);
+        return componentList;
+    }
+
+    public void fillParents(List<ComponentEntity> componentList) {
+        componentList.forEach(item -> {
+            item.getOptions().forEach(opt -> opt.setOptionParentComponent(item));
+            item.getChildren().forEach(opt -> opt.setParentComponent(item));
+            fillParents(item.getOptions());
+            fillParents(item.getChildren());
         });
-        return screenComponentDTOList;
     }
 
     public List<String> getResourceFiles(String locationPattern) throws IOException {

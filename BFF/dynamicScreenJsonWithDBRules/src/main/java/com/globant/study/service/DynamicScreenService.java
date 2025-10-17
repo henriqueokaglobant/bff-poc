@@ -75,7 +75,7 @@ public class DynamicScreenService {
         ruleEntityList.addAll(filterOutByPropertyRules(template, "role", role));
         // Apply rules (sets some fields like 'include' and 'label' with calculated data)
         applyRules(componentDTOList, ruleEntityList, locale);
-        logResultData(componentDTOList);
+        LOGGER.info("\n" + formattedLogString(0, componentDTOList));
         // Return filtered data: only elements which are supposed to be included
         return filterComponents(componentDTOList);
     }
@@ -123,9 +123,10 @@ public class DynamicScreenService {
             dto.setOrderPriority(orderPriority);
 
             String label = localizationInFile ? messageSource.getMessage(dto.getLabelKey(), null, locale) : localizationRepository.findByLocaleAndMessageKey(locale.toString(), dto.getLabelKey()).map(LocalizationEntity::getMessageValue).orElse("");
-            dto.setLabel(label);
+            dto.setLabel(label.isBlank() ? dto.getLabelKey() : label);
             // Also applying rules to the child elements
             applyRules(dto.getOptions(), ruleEntityList, locale);
+            applyRules(dto.getChildren(), ruleEntityList, locale);
         });
         componentDTOList.sort(Comparator.comparing(ComponentDTO::getOrderPriority, Comparator.nullsLast(Comparator.naturalOrder())));
     }
@@ -150,13 +151,15 @@ public class DynamicScreenService {
         return locale;
     }
 
-    private void logResultData(List<ComponentDTO> componentDTOList) {
-        StringBuffer logResult = new StringBuffer("\n=====FILTERED LIST:=====\n");
-        ObjectMapper objectMapper = new ObjectMapper();
+    private String formattedLogString(int level, List<ComponentDTO> componentDTOList) {
+        StringBuffer sb = new StringBuffer();
         componentDTOList.forEach(dto -> {
-            logResult.append(Utils.resetColor(dto.toString())).append("\n");
+            sb.append("\t".repeat(level));
+            sb.append(dto.getInclude() ? Utils.green(dto.toString()) : Utils.red(dto.toString())).append("\n");
+            sb.append(formattedLogString(level + 1, dto.getChildren()));
+            sb.append(formattedLogString(level + 1, dto.getOptions()));
         });
-        LOGGER.info(logResult.toString());
+        return sb.toString();
     }
 
     /**
@@ -167,6 +170,7 @@ public class DynamicScreenService {
         result = componentDTOList.stream().filter(ComponentDTO::getInclude).toList();
         result.forEach(dto -> {
             dto.setOptions(filterComponents(dto.getOptions()));
+            dto.setChildren(filterComponents(dto.getChildren()));
         });
         return result;
     }

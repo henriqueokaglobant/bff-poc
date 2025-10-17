@@ -1,101 +1,122 @@
 [
   {
-    "name": "person.firstName",
-    "labelKey": "firstNameLabel",
-    "type": "textbox",
-    "style": "width:80px; align:right"
-  },
-  {
-    "name": "person.lastName",
-    "labelKey": "lastNameLabel",
-    "type": "textbox"
-  },
-  {
-    "name": "person.document",
-    "labelKey": "documentLabel",
-    "type": "textbox"
-  },
-  {
-    "name": "person.address",
-    "labelKey": "addressLabel",
-    "type": "textbox"
-  },
-  {
-    "name": "person.address.zipcode",
-    "labelKey": "zipcodeLabel",
-    "type": "numberfield"
-  },
-  {
-    "name": "company.licenseNumber",
-    "labelKey": "licenseNumberLabel",
-    "type": "textbox",
-    "excludeByDefault": true
-  },
-  {
-    "name": "company.supportNumber",
-    "labelKey": "supportNumberLabel",
-    "type": "numberfield",
-    "excludeByDefault": true
-  },
-  {
-    "name": "company.document",
-    "labelKey": "documentLabel",
-    "type": "numberfield"
-  },
-  {
-    "name": "company.type",
-    "labelKey": "documentLabel",
-    "type": "radio",
-    "options": [
+    "name": "person",
+    "labelKey": "personLabel",
+    "type": "group",
+    "children": [
       {
-        "name": "company.type.options.contractor",
-        "labelKey": "contractorLabel",
-        "type": "option"
+        "name": "person.firstName",
+        "labelKey": "firstNameLabel",
+        "type": "textbox",
+        "style": "width:80px; align:right"
       },
       {
-        "name": "company.type.options.client",
-        "labelKey": "clientLabel",
-        "type": "option"
+        "name": "person.lastName",
+        "labelKey": "lastNameLabel",
+        "type": "textbox"
       },
       {
-        "name": "company.type.options.partner",
-        "labelKey": "partnerLabel",
-        "type": "option"
+        "name": "person.document",
+        "labelKey": "documentLabel",
+        "type": "textbox"
+      },
+      {
+        "name": "person.address",
+        "labelKey": "addressLabel",
+        "type": "textbox"
+      },
+      {
+        "name": "person.address.zipcode",
+        "labelKey": "zipcodeLabel",
+        "type": "numberfield"
       }
     ]
   },
   {
-    "name": "user.isAdmin",
-    "labelKey": "isAdminLabel",
-    "type": "checkbox",
-    "excludeByDefault": true
-  },
-  {
-    "name": "user.permissions",
-    "labelKey": "permissionsLabel",
-    "type": "multiple-select",
-    "excludeByDefault": true,
-    "options": [
+    "name": "company",
+    "labelKey": "companyLabel",
+    "type": "group",
+    "children": [
       {
-        "name": "user.permissions.options.editCustomer",
-        "labelKey": "editCustomerLabel",
-        "type": "option",
+        "name": "company.licenseNumber",
+        "labelKey": "licenseNumberLabel",
+        "type": "textbox",
         "excludeByDefault": true
       },
       {
-        "name": "user.permissions.options.viewCustomer",
-        "labelKey": "viewCustomerLabel",
-        "type": "option"
+        "name": "company.supportNumber",
+        "labelKey": "supportNumberLabel",
+        "type": "numberfield",
+        "excludeByDefault": true
       },
       {
-        "name": "user.permissions.options.editDeal",
-        "labelKey": "editDealLabel",
-        "type": "option"
+        "name": "company.document",
+        "labelKey": "documentLabel",
+        "type": "numberfield"
       },
       {
-        "name": "user.permissions.options.viewDeal",
-        "labelKey": "viewDealLabel",
-        "type": "option"
+        "name": "company.type",
+        "labelKey": "documentLabel",
+        "type": "radio",
+        "options": [
+          {
+            "name": "company.type.options.contractor",
+            "labelKey": "contractorLabel",
+            "type": "option"
+          },
+          {
+            "name": "company.type.options.client",
+            "labelKey": "clientLabel",
+            "type": "option"
+          },
+          {
+            "name": "company.type.options.partner",
+            "labelKey": "partnerLabel",
+            "type": "option"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "name": "user",
+    "labelKey": "userLabel",
+    "type": "group",
+    "children": [
+      {
+        "name": "user.isAdmin",
+        "labelKey": "isAdminLabel",
+        "type": "checkbox",
+        "excludeByDefault": true
+      },
+      {
+        "name": "user.permissions",
+        "labelKey": "permissionsLabel",
+        "type": "multiple-select",
+        "excludeByDefault": true,
+        "options": [
+          {
+            "name": "user.permissions.options.editCustomer",
+            "labelKey": "editCustomerLabel",
+            "type": "option",
+            "excludeByDefault": true
+          },
+          {
+            "name": "user.permissions.options.viewCustomer",
+            "labelKey": "viewCustomerLabel",
+            "type": "option"
+          },
+          {
+            "name": "user.permissions.options.editDeal",
+            "labelKey": "editDealLabel",
+            "type": "option"
+          },
+          {
+            "name": "user.permissions.options.viewDeal",
+            "labelKey": "viewDealLabel",
+            "type": "option"
+          }
+        ]
       }
     ]
   },

@@ -21,11 +21,18 @@ public class ComponentEntity {
     List<Integer> position;
 
     @OneToMany(mappedBy = "parentComponent", cascade = CascadeType.ALL, orphanRemoval = true)
-    List<ComponentEntity> options = new ArrayList<>();
+    List<ComponentEntity> children = new ArrayList<>();
 
     @ManyToOne(fetch = FetchType.EAGER) // Should always come populated
     @JoinColumn(name = "parent_component_id")
     ComponentEntity parentComponent;
+
+    @OneToMany(mappedBy = "optionParentComponent", cascade = CascadeType.ALL, orphanRemoval = true)
+    List<ComponentEntity> options = new ArrayList<>();
+
+    @ManyToOne(fetch = FetchType.EAGER) // Should always come populated
+    @JoinColumn(name = "option_parent_component_id")
+    ComponentEntity optionParentComponent;
 
     public Integer getId() {
         return id;
@@ -99,12 +106,12 @@ public class ComponentEntity {
         this.position = position;
     }
 
-    public List<ComponentEntity> getOptions() {
-        return options;
+    public List<ComponentEntity> getChildren() {
+        return children;
     }
 
-    public void setOptions(List<ComponentEntity> options) {
-        this.options = options;
+    public void setChildren(List<ComponentEntity> children) {
+        this.children = children;
     }
 
     public ComponentEntity getParentComponent() {
@@ -113,5 +120,21 @@ public class ComponentEntity {
 
     public void setParentComponent(ComponentEntity parentComponent) {
         this.parentComponent = parentComponent;
+    }
+
+    public List<ComponentEntity> getOptions() {
+        return options;
+    }
+
+    public void setOptions(List<ComponentEntity> options) {
+        this.options = options;
+    }
+
+    public ComponentEntity getOptionParentComponent() {
+        return optionParentComponent;
+    }
+
+    public void setOptionParentComponent(ComponentEntity optionParentComponent) {
+        this.optionParentComponent = optionParentComponent;
     }
 }
