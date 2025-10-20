@@ -3,12 +3,94 @@
     "name": "person",
     "labelKey": "personLabel",
     "type": "group",
+    "properties": {
+      "columns": [
+        {
+          "key": "id",
+          "label": "ID",
+          "type": "number",
+          "sortable": false,
+          "numberFormat": "1.0-0",
+          "width": "80px",
+          "align": "right"
+        },
+        {
+          "key": "name",
+          "label": "Name",
+          "type": "text",
+          "sortable": true,
+          "width": "auto",
+          "align": "left"
+        },
+        {
+          "key": "createdAt",
+          "label": "Created",
+          "type": "date",
+          "sortable": true,
+          "dateFormat": "mediumDate",
+          "width": "160px",
+          "align": "left"
+        },
+        {
+          "key": "price",
+          "label": "Price",
+          "type": "currency",
+          "sortable": true,
+          "currency": "USD",
+          "currencyDisplay": "symbol",
+          "width": "140px",
+          "align": "right"
+        },
+        {
+          "key": "active",
+          "label": "Active",
+          "type": "boolean",
+          "sortable": true,
+          "width": "110px",
+          "align": "center"
+        }
+      ],
+      "styles": {
+        "headerBg": "#1E3A8A",
+        "headerText": "#FFFFFF",
+        "rowBg": "#FFFFFF",
+        "rowHoverBg": "#F1F5F9",
+        "cellText": "#111827",
+        "booleanTrueColor": "#22C55E",
+        "booleanFalseColor": "#EF4444"
+      },
+      "filter": {
+        "enabled": true,
+        "placeholder": "Search table..."
+      },
+      "sort": {
+        "enabled": true,
+        "active": "name",
+        "direction": "asc",
+        "disableClear": true
+      },
+      "pagination": {
+        "enabled": true,
+        "pageIndex": 0,
+        "pageSize": 10,
+        "pageSizeOptions": [
+          5,
+          10,
+          25,
+          50,
+          100
+        ],
+        "showFirstLastButtons": true
+      }
+    },
     "children": [
       {
         "name": "person.firstName",
         "labelKey": "firstNameLabel",
         "type": "textbox",
-        "style": "width:80px; align:right"
+        "properties": {
+          "style": "width:80px; align:right"
+        }
       },
       {
         "name": "person.lastName",
@@ -56,7 +138,7 @@
       },
       {
         "name": "company.type",
-        "labelKey": "documentLabel",
+        "labelKey": "typeLabel",
         "type": "radio",
         "options": [
           {
@@ -124,6 +206,8 @@
     "name": "createUserButton",
     "labelKey": "createUserButtonLabel",
     "type": "button",
-    "function": "/user/save"
+    "properties": {
+      "function": "/user/save"
+    }
   }
 ]

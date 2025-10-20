@@ -17,7 +17,6 @@
   {
     "name": "createDealButton",
     "labelKey": "createDealButtonLabel",
-    "type": "button",
-    "function": "/deal/save"
+    "type": "button"
   }
 ]

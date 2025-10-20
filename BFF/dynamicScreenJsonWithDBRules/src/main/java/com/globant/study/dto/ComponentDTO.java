@@ -4,20 +4,24 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.globant.study.entity.ComponentEntity;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class ComponentDTO {
 
     String template;
     String name;
+    @JsonIgnore
     String labelKey;
     String label; // Calculate field
     String type;
-    String function;
-    String style;
+    @JsonIgnore
     Boolean include = false; // Calculate field
+    @JsonIgnore
     Boolean excludeByDefault = false;
     Integer orderPriority;
+    Map<String, Object> properties = new HashMap<>();
 
     @JsonIgnore
     ComponentDTO optionParentComponent;
@@ -65,22 +69,6 @@ public class ComponentDTO {
 
     public void setType(String type) {
         this.type = type;
-    }
-
-    public String getFunction() {
-        return function;
-    }
-
-    public void setFunction(String function) {
-        this.function = function;
-    }
-
-    public String getStyle() {
-        return style;
-    }
-
-    public void setStyle(String style) {
-        this.style = style;
     }
 
     public Boolean getInclude() {
@@ -137,6 +125,14 @@ public class ComponentDTO {
 
     public void setChildren(List<ComponentDTO> children) {
         this.children = children;
+    }
+
+    public Map<String, Object> getProperties() {
+        return properties;
+    }
+
+    public void setProperties(Map<String, Object> properties) {
+        this.properties = properties;
     }
 
     @Override

@@ -2,8 +2,7 @@
   {
     "name": "person.firstName",
     "labelKey": "firstNameLabel",
-    "type": "textbox",
-    "style": "width:80px; align:right"
+    "type": "textbox"
   },
   {
     "name": "person.lastName",
@@ -43,7 +42,6 @@
   {
     "name": "createCustomerButton",
     "labelKey": "createCustomerButtonLabel",
-    "type": "button",
-    "function": "/customer/save"
+    "type": "button"
   }
 ]
