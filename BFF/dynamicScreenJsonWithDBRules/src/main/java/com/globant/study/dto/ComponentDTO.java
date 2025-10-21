@@ -1,6 +1,8 @@
 package com.globant.study.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.globant.study.entity.ComponentEntity;
 
 import java.util.ArrayList;
@@ -10,25 +12,29 @@ import java.util.Map;
 
 public class ComponentDTO {
 
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     String template;
     String name;
     @JsonIgnore
-    String labelKey;
-    String label; // Calculate field
-    String type;
+    String titleKey;
+    String title; // Calculate field
+    String componentType;
     @JsonIgnore
     Boolean include = false; // Calculate field
     @JsonIgnore
     Boolean excludeByDefault = false;
     Integer orderPriority;
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     Map<String, Object> properties = new HashMap<>();
 
     @JsonIgnore
     ComponentDTO optionParentComponent;
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     List<ComponentDTO> options = new ArrayList<>();
 
     @JsonIgnore
     ComponentEntity parentComponent;
+    @JsonInclude(JsonInclude.Include.NON_EMPTY)
     List<ComponentDTO> children = new ArrayList<>();
 
     public String getTemplate() {
@@ -47,28 +53,28 @@ public class ComponentDTO {
         this.name = name;
     }
 
-    public String getLabelKey() {
-        return labelKey;
+    public String getTitleKey() {
+        return titleKey;
     }
 
-    public void setLabelKey(String labelKey) {
-        this.labelKey = labelKey;
+    public void setTitleKey(String titleKey) {
+        this.titleKey = titleKey;
     }
 
-    public String getLabel() {
-        return label;
+    public String getTitle() {
+        return title;
     }
 
-    public void setLabel(String label) {
-        this.label = label;
+    public void setTitle(String title) {
+        this.title = title;
     }
 
-    public String getType() {
-        return type;
+    public String getComponentType() {
+        return componentType;
     }
 
-    public void setType(String type) {
-        this.type = type;
+    public void setComponentType(String componentType) {
+        this.componentType = componentType;
     }
 
     public Boolean getInclude() {
@@ -138,7 +144,7 @@ public class ComponentDTO {
     @Override
     public String toString() {
         return "ComponentDTO{" +
-                "label='" + label + '\'' +
+                "label='" + title + '\'' +
                 ", name='" + name + '\'' +
                 '}';
     }

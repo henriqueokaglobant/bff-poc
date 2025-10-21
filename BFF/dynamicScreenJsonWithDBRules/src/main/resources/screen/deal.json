@@ -1,22 +1,22 @@
 [
   {
     "name": "deal.id",
-    "labelKey": "idLabel",
-    "type": "textbox"
+    "titleKey": "idLabel",
+    "componentType": "textbox"
   },
   {
     "name": "deal.company",
-    "labelKey": "companyLabel",
-    "type": "textbox"
+    "titleKey": "companyLabel",
+    "componentType": "textbox"
   },
   {
     "name": "deal.value",
-    "labelKey": "valueLabel",
-    "type": "numberfield"
+    "titleKey": "valueLabel",
+    "componentType": "numberfield"
   },
   {
     "name": "createDealButton",
-    "labelKey": "createDealButtonLabel",
-    "type": "button"
+    "titleKey": "createDealButtonLabel",
+    "componentType": "button"
   }
 ]

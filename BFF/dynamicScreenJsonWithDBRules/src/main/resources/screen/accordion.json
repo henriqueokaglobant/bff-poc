@@ -1,0 +1,367 @@
+[
+  {
+    "name": "",
+    "titleKey": "",
+    "componentType": "accordion",
+    "children": [
+      {
+        "name": "personal_info",
+        "componentType": "no-step-form",
+        "titleKey": "Personal Information",
+        "properties": {
+          "panelId": "personal_info",
+          "panelDescription": "Update your personal details",
+          "expanded": false,
+          "disabled": false,
+          "icon": "person",
+          "lazyLoading": {
+            "enabled": true,
+            "dataSource": {
+              "componentType": "api",
+              "endpoint": "/api/user/personal-info",
+              "method": "GET"
+            },
+            "loadingMessage": "Loading personal information...",
+            "errorMessage": "Failed to load personal information. Please try again."
+          }
+        },
+        "children": [
+          {
+            "name": "fullName",
+            "titleKey": "Full Name",
+            "componentType": "text",
+            "properties": {
+              "required": true,
+              "editable": true,
+              "placeholder": "Enter your full name",
+              "validations": {
+                "required": true,
+                "minLength": 2,
+                "maxLength": 100
+              }
+            }
+          },
+          {
+            "name": "dateOfBirth",
+            "titleKey": "Date of Birth",
+            "componentType": "date",
+            "properties": {
+              "required": true,
+              "editable": true
+            }
+          },
+          {
+            "name": "gender",
+            "titleKey": "Gender",
+            "componentType": "radio",
+            "properties": {
+              "required": false,
+              "editable": true
+            },
+            "options": [
+              {
+                "name": "Male",
+                "properties": {
+                  "value": "male"
+                }
+              },
+              {
+                "name": "Female",
+                "properties": {
+                  "value": "female"
+                }
+              },
+              {
+                "name": "Other",
+                "properties": {
+                  "value": "other"
+                }
+              },
+              {
+                "name": "Prefer not to say",
+                "properties": {
+                  "value": "not_specified"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "contact_info",
+        "titleKey": "Contact Information",
+        "componentType": "no-step-form",
+        "properties": {
+          "panelId": "contact_info",
+          "panelDescription": "Manage your contact details",
+          "expanded": false,
+          "disabled": false,
+          "icon": "contact_phone",
+          "lazyLoading": {
+            "enabled": true,
+            "dataSource": {
+              "componentType": "api",
+              "endpoint": "/api/user/contact-info",
+              "method": "GET"
+            },
+            "loadingMessage": "Loading contact information...",
+            "errorMessage": "Failed to load contact information. Please try again."
+          }
+        },
+        "children": [
+          {
+            "name": "primaryEmail",
+            "titleKey": "Primary Email",
+            "componentType": "email",
+            "properties": {
+              "required": true,
+              "editable": true,
+              "placeholder": "Enter your primary email",
+              "validations": {
+                "required": true,
+                "email": true
+              }
+            }
+          },
+          {
+            "name": "secondaryEmail",
+            "titleKey": "Secondary Email",
+            "componentType": "email",
+            "properties": {
+              "required": false,
+              "editable": true,
+              "placeholder": "Enter your secondary email",
+              "validations": {
+                "email": true
+              }
+            }
+          },
+          {
+            "name": "phoneNumber",
+            "titleKey": "Phone Number",
+            "componentType": "text",
+            "properties": {
+              "required": true,
+              "editable": true,
+              "placeholder": "Enter your phone number",
+              "validations": {
+                "required": true,
+                "pattern": "^[\\+]?[1-9][\\d]{0,15}$"
+              }
+            }
+          },
+          {
+            "name": "address",
+            "titleKey": "Address",
+            "componentType": "textarea",
+            "properties": {
+              "required": false,
+              "editable": true,
+              "placeholder": "Enter your complete address",
+              "validations": {
+                "maxLength": 500
+              }
+            }
+          }
+        ]
+      },
+      {
+        "name": "security_settings",
+        "properties": {
+          "panelId": "security_settings",
+          "panelTitle": "Security Settings",
+          "panelDescription": "Update password and security preferences",
+          "expanded": false,
+          "disabled": false,
+          "icon": "security",
+          "componentType": "no-step-form",
+          "lazyLoading": {
+            "enabled": true,
+            "dataSource": {
+              "componentType": "api",
+              "endpoint": "/api/user/security-settings",
+              "method": "GET"
+            },
+            "loadingMessage": "Loading security settings...",
+            "errorMessage": "Failed to load security settings. Please try again."
+          }
+        },
+        "children": [
+          {
+            "name": "currentPassword",
+            "titleKey": "Current Password",
+            "componentType": "password",
+            "properties": {
+              "required": true,
+              "editable": true,
+              "placeholder": "Enter your current password",
+              "validations": {
+                "required": true,
+                "minLength": 8
+              }
+            }
+          },
+          {
+            "name": "newPassword",
+            "titleKey": "New Password",
+            "componentType": "password",
+            "properties": {
+              "required": true,
+              "editable": true,
+              "placeholder": "Enter new password",
+              "validations": {
+                "required": true,
+                "minLength": 8,
+                "pattern": "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)[a-zA-Z\\d@$!%*?&]{8,}$"
+              }
+            }
+          },
+          {
+            "name": "confirmNewPassword",
+            "titleKey": "Confirm New Password",
+            "componentType": "password",
+            "properties": {
+              "required": true,
+              "editable": true,
+              "placeholder": "Confirm your new password",
+              "validations": {
+                "required": true,
+                "minLength": 8
+              }
+            }
+          },
+          {
+            "name": "twoFactorEnabled",
+            "titleKey": "Enable Two-Factor Authentication",
+            "componentType": "checkbox",
+            "properties": {
+              "required": false,
+              "editable": true
+            }
+          }
+        ]
+      },
+      {
+        "name": "preferences",
+        "properties": {
+          "panelId": "preferences",
+          "panelTitle": "Preferences",
+          "panelDescription": "Customize your experience",
+          "expanded": false,
+          "disabled": false,
+          "icon": "settings",
+          "componentType": "no-step-form",
+          "lazyLoading": {
+            "enabled": true,
+            "dataSource": {
+              "componentType": "api",
+              "endpoint": "/api/user/preferences",
+              "method": "GET"
+            },
+            "loadingMessage": "Loading preferences...",
+            "errorMessage": "Failed to load preferences. Please try again."
+          }
+        },
+        "children": [
+          {
+            "name": "language",
+            "titleKey": "Preferred Language",
+            "componentType": "select",
+            "properties": {
+              "required": true,
+              "editable": true
+            },
+            "options": [
+              {
+                "name": "English",
+                "properties": {
+                  "value": "en"
+                }
+              },
+              {
+                "name": "Spanish",
+                "properties": {
+                  "value": "es"
+                }
+              },
+              {
+                "name": "French",
+                "properties": {
+                  "value": "fr"
+                }
+              },
+              {
+                "name": "German",
+                "properties": {
+                  "value": "de"
+                }
+              }
+            ]
+          },
+          {
+            "name": "timezone",
+            "titleKey": "Timezone",
+            "componentType": "select",
+            "properties": {
+              "required": true,
+              "editable": true
+            },
+            "options": [
+              {
+                "name": "UTC-08:00 (Pacific Standard Time)",
+                "properties": {
+                  "value": "PST"
+                }
+              },
+              {
+                "name": "UTC-05:00 (Eastern Standard Time)",
+                "properties": {
+                  "value": "EST"
+                }
+              },
+              {
+                "name": "UTC+00:00 (Greenwich Mean Time)",
+                "properties": {
+                  "value": "GMT"
+                }
+              },
+              {
+                "name": "UTC+01:00 (Central European Time)",
+                "properties": {
+                  "value": "CET"
+                }
+              }
+            ]
+          },
+          {
+            "name": "emailNotifications",
+            "titleKey": "Email Notifications",
+            "componentType": "checkbox",
+            "properties": {
+              "required": false,
+              "editable": true
+            }
+          },
+          {
+            "name": "pushNotifications",
+            "titleKey": "Push Notifications",
+            "componentType": "checkbox",
+            "properties": {
+              "required": false,
+              "editable": true
+            }
+          },
+          {
+            "name": "marketingEmails",
+            "titleKey": "Marketing Emails",
+            "componentType": "checkbox",
+            "properties": {
+              "required": false,
+              "editable": true
+            }
+          }
+        ]
+      }
+    ]
+  }
+]

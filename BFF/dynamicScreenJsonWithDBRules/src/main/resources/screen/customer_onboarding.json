@@ -1,47 +1,47 @@
 [
   {
     "name": "person.firstName",
-    "labelKey": "firstNameLabel",
-    "type": "textbox"
+    "titleKey": "firstNameLabel",
+    "componentType": "textbox"
   },
   {
     "name": "person.lastName",
-    "labelKey": "lastNameLabel",
-    "type": "textbox"
+    "titleKey": "lastNameLabel",
+    "componentType": "textbox"
   },
   {
     "name": "person.document",
-    "labelKey": "documentLabel",
-    "type": "textbox"
+    "titleKey": "documentLabel",
+    "componentType": "textbox"
   },
   {
     "name": "person.address",
-    "labelKey": "addressLabel",
-    "type": "textbox"
+    "titleKey": "addressLabel",
+    "componentType": "textbox"
   },
   {
     "name": "person.address.zipcode",
-    "labelKey": "zipcodeLabel",
-    "type": "numberfield"
+    "titleKey": "zipcodeLabel",
+    "componentType": "numberfield"
   },
   {
     "name": "notification.type",
-    "labelKey": "notificationTypeLabel",
-    "type": "radio"
+    "titleKey": "notificationTypeLabel",
+    "componentType": "radio"
   },
   {
     "name": "notification.email",
-    "labelKey": "emailLabel",
-    "type": "textbox"
+    "titleKey": "emailLabel",
+    "componentType": "textbox"
   },
   {
     "name": "notification.phoneNumber",
-    "labelKey": "phoneNumberLabel",
-    "type": "numberfield"
+    "titleKey": "phoneNumberLabel",
+    "componentType": "numberfield"
   },
   {
     "name": "createCustomerButton",
-    "labelKey": "createCustomerButtonLabel",
-    "type": "button"
+    "titleKey": "createCustomerButtonLabel",
+    "componentType": "button"
   }
 ]

@@ -1,14 +1,14 @@
 [
   {
     "name": "person",
-    "labelKey": "personLabel",
-    "type": "group",
+    "titleKey": "personLabel",
+    "componentType": "group",
     "properties": {
       "columns": [
         {
           "key": "id",
           "label": "ID",
-          "type": "number",
+          "componentType": "number",
           "sortable": false,
           "numberFormat": "1.0-0",
           "width": "80px",
@@ -17,15 +17,15 @@
         {
           "key": "name",
           "label": "Name",
-          "type": "text",
+          "componentType": "text",
           "sortable": true,
           "width": "auto",
           "align": "left"
         },
         {
           "key": "createdAt",
-          "label": "Created",
-          "type": "date",
+          "label": "??created??",
+          "componentType": "date",
           "sortable": true,
           "dateFormat": "mediumDate",
           "width": "160px",
@@ -33,8 +33,8 @@
         },
         {
           "key": "price",
-          "label": "Price",
-          "type": "currency",
+          "label": "??price??",
+          "componentType": "currency",
           "sortable": true,
           "currency": "USD",
           "currencyDisplay": "symbol",
@@ -44,7 +44,7 @@
         {
           "key": "active",
           "label": "Active",
-          "type": "boolean",
+          "componentType": "boolean",
           "sortable": true,
           "width": "110px",
           "align": "center"
@@ -86,75 +86,75 @@
     "children": [
       {
         "name": "person.firstName",
-        "labelKey": "firstNameLabel",
-        "type": "textbox",
+        "titleKey": "firstNameLabel",
+        "componentType": "textbox",
         "properties": {
           "style": "width:80px; align:right"
         }
       },
       {
         "name": "person.lastName",
-        "labelKey": "lastNameLabel",
-        "type": "textbox"
+        "titleKey": "lastNameLabel",
+        "componentType": "textbox"
       },
       {
         "name": "person.document",
-        "labelKey": "documentLabel",
-        "type": "textbox"
+        "titleKey": "documentLabel",
+        "componentType": "textbox"
       },
       {
         "name": "person.address",
-        "labelKey": "addressLabel",
-        "type": "textbox"
+        "titleKey": "addressLabel",
+        "componentType": "textbox"
       },
       {
         "name": "person.address.zipcode",
-        "labelKey": "zipcodeLabel",
-        "type": "numberfield"
+        "titleKey": "zipcodeLabel",
+        "componentType": "numberfield"
       }
     ]
   },
   {
     "name": "company",
-    "labelKey": "companyLabel",
-    "type": "group",
+    "titleKey": "companyLabel",
+    "componentType": "group",
     "children": [
       {
         "name": "company.licenseNumber",
-        "labelKey": "licenseNumberLabel",
-        "type": "textbox",
+        "titleKey": "licenseNumberLabel",
+        "componentType": "textbox",
         "excludeByDefault": true
       },
       {
         "name": "company.supportNumber",
-        "labelKey": "supportNumberLabel",
-        "type": "numberfield",
+        "titleKey": "supportNumberLabel",
+        "componentType": "numberfield",
         "excludeByDefault": true
       },
       {
         "name": "company.document",
-        "labelKey": "documentLabel",
-        "type": "numberfield"
+        "titleKey": "documentLabel",
+        "componentType": "numberfield"
       },
       {
         "name": "company.type",
-        "labelKey": "typeLabel",
-        "type": "radio",
+        "titleKey": "typeLabel",
+        "componentType": "radio",
         "options": [
           {
             "name": "company.type.options.contractor",
-            "labelKey": "contractorLabel",
-            "type": "option"
+            "titleKey": "contractorLabel",
+            "componentType": "option"
           },
           {
             "name": "company.type.options.client",
-            "labelKey": "clientLabel",
-            "type": "option"
+            "titleKey": "clientLabel",
+            "componentType": "option"
           },
           {
             "name": "company.type.options.partner",
-            "labelKey": "partnerLabel",
-            "type": "option"
+            "titleKey": "partnerLabel",
+            "componentType": "option"
           }
         ]
       }
@@ -162,41 +162,41 @@
   },
   {
     "name": "user",
-    "labelKey": "userLabel",
-    "type": "group",
+    "titleKey": "userLabel",
+    "componentType": "group",
     "children": [
       {
         "name": "user.isAdmin",
-        "labelKey": "isAdminLabel",
-        "type": "checkbox",
+        "titleKey": "isAdminLabel",
+        "componentType": "checkbox",
         "excludeByDefault": true
       },
       {
         "name": "user.permissions",
-        "labelKey": "permissionsLabel",
-        "type": "multiple-select",
+        "titleKey": "permissionsLabel",
+        "componentType": "multiple-select",
         "excludeByDefault": true,
         "options": [
           {
             "name": "user.permissions.options.editCustomer",
-            "labelKey": "editCustomerLabel",
-            "type": "option",
+            "titleKey": "editCustomerLabel",
+            "componentType": "option",
             "excludeByDefault": true
           },
           {
             "name": "user.permissions.options.viewCustomer",
-            "labelKey": "viewCustomerLabel",
-            "type": "option"
+            "titleKey": "viewCustomerLabel",
+            "componentType": "option"
           },
           {
             "name": "user.permissions.options.editDeal",
-            "labelKey": "editDealLabel",
-            "type": "option"
+            "titleKey": "editDealLabel",
+            "componentType": "option"
           },
           {
             "name": "user.permissions.options.viewDeal",
-            "labelKey": "viewDealLabel",
-            "type": "option"
+            "titleKey": "viewDealLabel",
+            "componentType": "option"
           }
         ]
       }
@@ -204,8 +204,8 @@
   },
   {
     "name": "createUserButton",
-    "labelKey": "createUserButtonLabel",
-    "type": "button",
+    "titleKey": "createUserButtonLabel",
+    "componentType": "button",
     "properties": {
       "function": "/user/save"
     }

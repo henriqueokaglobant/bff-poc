@@ -16,8 +16,8 @@ public class ComponentEntity {
     Integer id;
     String template;
     String name;
-    String labelKey;
-    String type;
+    String titleKey;
+    String componentType;
     Boolean excludeByDefault = false;
     List<Integer> position;
 
@@ -63,20 +63,20 @@ public class ComponentEntity {
         this.name = name;
     }
 
-    public String getLabelKey() {
-        return labelKey;
+    public String getTitleKey() {
+        return titleKey;
     }
 
-    public void setLabelKey(String labelKey) {
-        this.labelKey = labelKey;
+    public void setTitleKey(String titleKey) {
+        this.titleKey = titleKey;
     }
 
-    public String getType() {
-        return type;
+    public String getComponentType() {
+        return componentType;
     }
 
-    public void setType(String type) {
-        this.type = type;
+    public void setComponentType(String componentType) {
+        this.componentType = componentType;
     }
 
     public Boolean getExcludeByDefault() {

@@ -1,0 +1,122 @@
+[
+  {
+    "name": "section",
+    "titleKey": "@@section@@",
+    "componentType": "group",
+    "children": [
+      {
+        "name": "PRODUCTS_LIST",
+        "titleKey": "@@products@@",
+        "componentType": "table",
+        "properties": {
+          "columns": [
+            {
+              "key": "name",
+              "label": "@@name@@",
+              "type": "number",
+              "sortable": false,
+              "numberFormat": "1.0-0"
+            },
+            {
+              "key": "name",
+              "label": "Name",
+              "type": "text",
+              "sortable": true
+            },
+            {
+              "key": "createdAt",
+              "label": "@@createdAt@@",
+              "type": "date",
+              "sortable": true,
+              "dateFormat": "medium"
+            },
+            {
+              "key": "price",
+              "label": "@@price@@",
+              "type": "currency",
+              "sortable": true,
+              "currency": "USD"
+            },
+            {
+              "key": "active",
+              "label": "Active",
+              "type": "boolean",
+              "sortable": true
+            },
+            {
+              "key": "action",
+              "label": "Actions",
+              "type": "boolean",
+              "sortable": false,
+              "displayType": "icon"
+            }
+          ],
+          "styles": {
+            "headerBg": "",
+            "headerText": "",
+            "rowBg": "",
+            "rowHoverBg": "",
+            "cellText": "",
+            "booleanTrueColor": "",
+            "booleanFalseColor": ""
+          },
+          "filter": {
+            "enabled": true,
+            "placeholder": "Search in this table...",
+            "filterLabel": "@@filterBy@@",
+            "closeButtonLabel": "Close this filter"
+          },
+          "sort": {
+            "enabled": true,
+            "active": "name",
+            "direction": "asc",
+            "disableClear": true
+          },
+          "pagination": {
+            "enabled": true,
+            "pageIndex": 0,
+            "pageSize": 10,
+            "pageSizeOptions": [
+              5,
+              10,
+              20
+            ],
+            "showFirstLastButtons": true
+          },
+          "defaultCurrency": "USD"
+        }
+      },
+      {
+        "name": "NAME_FIELD",
+        "titleKey": "@@name@@",
+        "componentType": "input",
+        "properties": {
+          "inputTypes": [
+            {
+              "inputType": "text",
+              "key": "",
+              "label": "Name",
+              "type": "text",
+              "disabled": false,
+              "placeholder": "Enter the text",
+              "validations": {
+                "required": true,
+                "maxLength": 10
+              },
+              "customValidations": [
+                {
+                  "name": "minLengthValidation",
+                  "args": [
+                    {
+                      "minLength": 5
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      }
+    ]
+  }
+]

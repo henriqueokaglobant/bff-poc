@@ -1,6 +1,7 @@
 package com.globant.study.service;
 
 import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.globant.study.dto.ComponentDTO;
@@ -12,6 +13,7 @@ import com.globant.study.repository.RuleRepository;
 import com.globant.study.repository.ComponentRepository;
 import com.globant.study.utils.Utils;
 import org.apache.commons.lang3.BooleanUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,12 +28,17 @@ import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
 import java.util.logging.Logger;
+import java.util.regex.MatchResult;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 @Service
 public class DynamicScreenService {
     public final Logger LOGGER = Logger.getLogger(getClass().getName());
     public final Comparator<Integer> naturalOrderNullsLast = Comparator.nullsLast(Comparator.naturalOrder());
+    private final ObjectMapper objectMapper = new ObjectMapper();
+    private final String LOCALIZER_AFFIX = "@@"; // Avoid using special characters because regex is used in combination with these
 
     @Autowired
     private RuleRepository ruleRepository;
@@ -82,7 +89,6 @@ public class DynamicScreenService {
 
     private List<ComponentDTO> readScreenDTOFromFile(String template) {
         List<ComponentDTO> componentDTOList = new ArrayList<>();
-        ObjectMapper objectMapper = new ObjectMapper();
         objectMapper.configure(JsonParser.Feature.INCLUDE_SOURCE_IN_LOCATION, true);
         try (InputStream in = new FileInputStream(ResourceUtils.getFile("classpath:screen/" + template + ".json"))) {
             String fileContent = new String(in.readAllBytes(), StandardCharsets.UTF_8);
@@ -122,13 +128,54 @@ public class DynamicScreenService {
             dto.setInclude(!(isExcludedByDefault || hasExclusionRule) || hasInclusionRule);
             dto.setOrderPriority(orderPriority);
 
-            String label = localizationInFile ? messageSource.getMessage(dto.getLabelKey(), null, locale) : localizationRepository.findByLocaleAndMessageKey(locale.toString(), dto.getLabelKey()).map(LocalizationEntity::getMessageValue).orElse("");
-            dto.setLabel(label.isBlank() ? dto.getLabelKey() : label);
+            if (dto.getTitleKey() != null) {
+                dto.setTitle(localize(dto.getTitleKey(), locale));
+            }
             // Also applying rules to the child elements
             applyRules(dto.getOptions(), ruleEntityList, locale);
             applyRules(dto.getChildren(), ruleEntityList, locale);
+            dto.setProperties(localizeGenericProperties(dto.getProperties(), locale));
         });
         componentDTOList.sort(Comparator.comparing(ComponentDTO::getOrderPriority, Comparator.nullsLast(Comparator.naturalOrder())));
+    }
+
+    /**
+     * Localize the labelKey, it should have this pattern @@key@@ (also check affix variable to make sure it's right)
+     * In case of not finding any matches, it will return the key as the value
+     * Depending on the properties of the app, the localization can be done by using the messages.properties file or the db
+     */
+    private String localize(String labelKey, Locale locale) {
+        String message = "";
+        if (labelKey.startsWith(LOCALIZER_AFFIX) && labelKey.endsWith(LOCALIZER_AFFIX) && labelKey.length() >= 2 * LOCALIZER_AFFIX.length()) {
+            labelKey = labelKey.substring(LOCALIZER_AFFIX.length(), labelKey.length() - LOCALIZER_AFFIX.length());
+            if (localizationInFile) {
+                message = messageSource.getMessage(labelKey, null, locale);
+            } else {
+                message = localizationRepository.findByLocaleAndMessageKey(locale.toString(), labelKey).map(LocalizationEntity::getMessageValue).orElse("");
+            }
+        }
+        if (StringUtils.isEmpty(message)) {
+            message = labelKey;
+        }
+        return message;
+    }
+
+    public Map<String, Object> localizeGenericProperties(Map<String, Object> properties, Locale locale) {
+        Map<String, Object> localizedProperties = properties;
+        try {
+            String jsonString = objectMapper.writeValueAsString(properties);
+            String localizedJsonString = jsonString;
+            Pattern pattern = Pattern.compile(LOCALIZER_AFFIX + ".*?" + LOCALIZER_AFFIX);
+            Matcher matcher = pattern.matcher(jsonString);
+            for (MatchResult i : matcher.results().toList()) {
+                localizedJsonString = localizedJsonString.replaceFirst(i.group(), localize(i.group(), locale));
+            }
+            localizedProperties = objectMapper.readValue(localizedJsonString, new TypeReference<Map<String, Object>>() {
+            });
+        } catch (JsonProcessingException e) {
+            LOGGER.severe("Error localizing generic properties fields");
+        }
+        return localizedProperties;
     }
 
     private String getLicenseFromUser(String user) {
