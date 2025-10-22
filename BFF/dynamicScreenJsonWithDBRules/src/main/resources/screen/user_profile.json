@@ -24,7 +24,7 @@
         },
         {
           "key": "createdAt",
-          "label": "??created??",
+          "label": "@@createdAt@@",
           "componentType": "date",
           "sortable": true,
           "dateFormat": "mediumDate",
@@ -33,7 +33,7 @@
         },
         {
           "key": "price",
-          "label": "??price??",
+          "label": "@@price@@",
           "componentType": "currency",
           "sortable": true,
           "currency": "USD",
@@ -170,6 +170,23 @@
         "titleKey": "isAdminLabel",
         "componentType": "checkbox",
         "excludeByDefault": true
+      },
+      {
+        "name": "user.properties",
+        "titleKey": "@@userProperties@@",
+        "componentType": "group",
+        "children": [
+          {
+            "name": "user.properties.license",
+            "titleKey": "@@license@@",
+            "componentType": "textfield"
+          },
+          {
+            "name": "user.properties.additionalProperties",
+            "titleKey": "@@additionalProperties@@",
+            "componentType": "key-value-input"
+          }
+        ]
       },
       {
         "name": "user.permissions",

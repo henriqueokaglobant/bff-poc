@@ -65,10 +65,10 @@ public class DataInitializer implements ApplicationListener<ApplicationReadyEven
         ruleRepository.save(createRule("user_profile", "role", "admin", "company.supportNumber", include, null));
         ruleRepository.save(createRule("user_profile", "role", "admin", "user.isAdmin", include, 2));
         ruleRepository.save(createRule("user_profile", "role", "admin", "user.permissions", include, 2));
-        ruleRepository.save(createRule("user_profile", "role", "admin", "createUserButton", null, 1));
         ruleRepository.save(createRule("user_profile", "role", "admin", "company.type.options.contractor", null, 13));
         ruleRepository.save(createRule("user_profile", "role", "admin", "company.type.options.client", null, 12));
         ruleRepository.save(createRule("user_profile", "role", "admin", "company.type.options.partner", null, 11));
+        ruleRepository.save(createRule("user_profile", "role", "admin", "user", null, 1));
 
 
         ruleRepository.save(createRule("user_profile", "role", "support", "company.type.options.contractor", exclude, null));
