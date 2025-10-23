@@ -19,7 +19,6 @@ public class ComponentEntity {
     String titleKey;
     String componentType;
     Boolean excludeByDefault = false;
-    List<Integer> position;
 
     @OneToMany(mappedBy = "parentComponent", cascade = CascadeType.ALL, orphanRemoval = true)
     List<ComponentEntity> children = new ArrayList<>();
@@ -85,14 +84,6 @@ public class ComponentEntity {
 
     public void setExcludeByDefault(Boolean excludeByDefault) {
         this.excludeByDefault = excludeByDefault;
-    }
-
-    public List<Integer> getPosition() {
-        return position;
-    }
-
-    public void setPosition(List<Integer> position) {
-        this.position = position;
     }
 
     public List<ComponentEntity> getChildren() {
