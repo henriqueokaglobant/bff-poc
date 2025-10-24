@@ -5,7 +5,7 @@ import jakarta.persistence.*;
 import java.io.Serializable;
 
 @Entity
-@Table(name = "locale")
+@Table(name = "localization")
 public class LocalizationEntity implements Serializable {
 
     @Id

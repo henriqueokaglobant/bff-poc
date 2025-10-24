@@ -2,8 +2,11 @@ To run this application:
 * JDK: 17
 * Main class: DynamicScreenApplication
 
+To run Postgres (or you can setup h2 db in the application.properties)
+docker run -d --name my-postgres -p 5432:5432 -e POSTGRES_PASSWORD=your_password postgres
+
 Using the application:
-* Call the endpoint like this: http://localhost:8080/screen?template=user_profile&license=free&role=support
+* Call the endpoint like this: http://localhost:8080/screen?template=user_profile&user=support_enterprise_br
 * Output will be a Json based on the existing json files and different licenses and roles will filter out some of the data from the json
 * The filenames available are the one in the resources/screen folder
 * The filtering rules are store in the h2 DB and will be auto created when the application starts (see DataInitializer.java)
