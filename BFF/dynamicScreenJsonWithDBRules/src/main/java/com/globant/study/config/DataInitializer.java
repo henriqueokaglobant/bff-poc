@@ -3,24 +3,23 @@ package com.globant.study.config;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.globant.study.entity.ComponentEntity;
 import com.globant.study.entity.LocalizationEntity;
 import com.globant.study.entity.RuleEntity;
-import com.globant.study.entity.ComponentEntity;
+import com.globant.study.repository.ComponentRepository;
 import com.globant.study.repository.LocalizationRepository;
 import com.globant.study.repository.RuleRepository;
-import com.globant.study.repository.ComponentRepository;
 import com.globant.study.utils.Utils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.support.ResourceBundleMessageSource;
 import org.springframework.core.io.Resource;
+import org.springframework.core.io.ResourceLoader;
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 import org.springframework.core.io.support.ResourcePatternResolver;
 import org.springframework.stereotype.Component;
-import org.springframework.util.ResourceUtils;
 
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
@@ -33,6 +32,9 @@ import java.util.regex.Pattern;
 @Component
 public class DataInitializer implements ApplicationListener<ApplicationReadyEvent> {
     public final Logger LOGGER = Logger.getLogger(getClass().getName());
+
+    @Autowired
+    private ResourceLoader resourceLoader;
 
     @Autowired
     private RuleRepository ruleRepository;
@@ -98,7 +100,7 @@ public class DataInitializer implements ApplicationListener<ApplicationReadyEven
         ObjectMapper objectMapper = new ObjectMapper();
         objectMapper.configure(JsonParser.Feature.INCLUDE_SOURCE_IN_LOCATION, true);
         for (String resourceFile : getResourceFiles("classpath:screen/*.json")) {
-            try (InputStream in = new FileInputStream(ResourceUtils.getFile("classpath:screen/" + resourceFile))) {
+            try (InputStream in = resourceLoader.getResource("classpath:screen/" + resourceFile).getInputStream()) {
                 String fileContent = new String(in.readAllBytes(), StandardCharsets.UTF_8);
                 List<ComponentEntity> componentListForTemplate = objectMapper.readValue(fileContent, new TypeReference<List<ComponentEntity>>() {
                 });

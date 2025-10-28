@@ -3,9 +3,16 @@ To run this application:
 * Main class: DynamicScreenApplication
 
 To run Postgres (or you can setup h2 db in the application.properties)
-docker run -d --name my-postgres -p 5432:5432 -e POSTGRES_PASSWORD=your_password postgres
+    docker run -d --name bff-postgres -p 5432:5432 -e POSTGRES_PASSWORD=your_password postgres
 
 Using the application:
+* If running the application locally, use the following property as this
+    spring.datasource.url=jdbc:postgresql://localhost:5432/postgres
+* To use application as a docker container:
+    mvn clean package
+    docker build -t bff .
+    docker run --name bff -p 8080:8080 bff
+
 * Call the endpoint like this: http://localhost:8080/screen?template=user_profile&user=support_enterprise_br
 * Output will be a Json based on the existing json files and different licenses and roles will filter out some of the data from the json
 * The filenames available are the one in the resources/screen folder

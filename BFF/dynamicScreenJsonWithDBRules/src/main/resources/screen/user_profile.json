@@ -1,7 +1,7 @@
 [
   {
     "name": "person",
-    "titleKey": "personLabel",
+    "titleKey": "person",
     "componentType": "group",
     "properties": {
       "columns": [
@@ -86,7 +86,7 @@
     "children": [
       {
         "name": "person.firstName",
-        "titleKey": "firstNameLabel",
+        "titleKey": "firstName",
         "componentType": "textbox",
         "properties": {
           "style": "width:80px; align:right"
@@ -94,66 +94,66 @@
       },
       {
         "name": "person.lastName",
-        "titleKey": "lastNameLabel",
+        "titleKey": "lastName",
         "componentType": "textbox"
       },
       {
         "name": "person.document",
-        "titleKey": "documentLabel",
+        "titleKey": "document",
         "componentType": "textbox"
       },
       {
         "name": "person.address",
-        "titleKey": "addressLabel",
+        "titleKey": "address",
         "componentType": "textbox"
       },
       {
         "name": "person.address.zipcode",
-        "titleKey": "zipcodeLabel",
+        "titleKey": "zipcode",
         "componentType": "numberfield"
       }
     ]
   },
   {
     "name": "company",
-    "titleKey": "companyLabel",
+    "titleKey": "company",
     "componentType": "group",
     "children": [
       {
         "name": "company.licenseNumber",
-        "titleKey": "licenseNumberLabel",
+        "titleKey": "licenseNumber",
         "componentType": "textbox",
         "excludeByDefault": true
       },
       {
         "name": "company.supportNumber",
-        "titleKey": "supportNumberLabel",
+        "titleKey": "supportNumber",
         "componentType": "numberfield",
         "excludeByDefault": true
       },
       {
         "name": "company.document",
-        "titleKey": "documentLabel",
+        "titleKey": "document",
         "componentType": "numberfield"
       },
       {
         "name": "company.type",
-        "titleKey": "typeLabel",
+        "titleKey": "type",
         "componentType": "radio",
         "options": [
           {
             "name": "company.type.options.contractor",
-            "titleKey": "contractorLabel",
+            "titleKey": "contractor",
             "componentType": "option"
           },
           {
             "name": "company.type.options.client",
-            "titleKey": "clientLabel",
+            "titleKey": "client",
             "componentType": "option"
           },
           {
             "name": "company.type.options.partner",
-            "titleKey": "partnerLabel",
+            "titleKey": "partner",
             "componentType": "option"
           }
         ]
@@ -162,12 +162,12 @@
   },
   {
     "name": "user",
-    "titleKey": "userLabel",
+    "titleKey": "@@user@@",
     "componentType": "group",
     "children": [
       {
         "name": "user.isAdmin",
-        "titleKey": "isAdminLabel",
+        "titleKey": "isAdmin",
         "componentType": "checkbox",
         "excludeByDefault": true
       },
@@ -190,29 +190,29 @@
       },
       {
         "name": "user.permissions",
-        "titleKey": "permissionsLabel",
+        "titleKey": "permissions",
         "componentType": "multiple-select",
         "excludeByDefault": true,
         "options": [
           {
             "name": "user.permissions.options.editCustomer",
-            "titleKey": "editCustomerLabel",
+            "titleKey": "editCustomer",
             "componentType": "option",
             "excludeByDefault": true
           },
           {
             "name": "user.permissions.options.viewCustomer",
-            "titleKey": "viewCustomerLabel",
+            "titleKey": "viewCustomer",
             "componentType": "option"
           },
           {
             "name": "user.permissions.options.editDeal",
-            "titleKey": "editDealLabel",
+            "titleKey": "editDeal",
             "componentType": "option"
           },
           {
             "name": "user.permissions.options.viewDeal",
-            "titleKey": "viewDealLabel",
+            "titleKey": "viewDeal",
             "componentType": "option"
           }
         ]
@@ -221,7 +221,7 @@
   },
   {
     "name": "createUserButton",
-    "titleKey": "createUserButtonLabel",
+    "titleKey": "createUserButton",
     "componentType": "button",
     "properties": {
       "function": "/user/save"

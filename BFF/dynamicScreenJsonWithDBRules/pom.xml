@@ -9,9 +9,9 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>com.globant</groupId>
-    <artifactId>dynamic-screen-json-wth-db-rules</artifactId>
+    <artifactId>bff</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>dynamic-screen-json-wth-db-rules</name>
+    <name>bff</name>
     <description>Micro service that return the JSON to build the screen</description>
     <url/>
     <licenses>
