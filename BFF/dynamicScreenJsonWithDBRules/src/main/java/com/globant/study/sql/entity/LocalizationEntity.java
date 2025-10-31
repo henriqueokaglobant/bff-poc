@@ -1,4 +1,4 @@
-package com.globant.study.entity;
+package com.globant.study.sql.entity;
 
 import jakarta.persistence.*;
 

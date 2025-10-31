@@ -5,10 +5,12 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.globant.study.dto.ComponentDTO;
-import com.globant.study.entity.ComponentEntity;
-import com.globant.study.entity.RuleEntity;
-import com.globant.study.repository.ComponentRepository;
-import com.globant.study.repository.RuleRepository;
+import com.globant.study.nosql.document.ComponentDocument;
+import com.globant.study.nosql.repository.NoSQLComponentRepository;
+import com.globant.study.sql.entity.ComponentEntity;
+import com.globant.study.sql.entity.RuleEntity;
+import com.globant.study.sql.repository.SQLComponentRepository;
+import com.globant.study.sql.repository.SQLRuleRepository;
 import com.globant.study.utils.Utils;
 import org.apache.commons.lang3.BooleanUtils;
 import org.modelmapper.ModelMapper;
@@ -35,15 +37,21 @@ public class DynamicScreenService {
     public static final String REGEX_NEAREST_ALL_CHARS = ".*?";
     public final Logger LOGGER = Logger.getLogger(getClass().getName());
     private final ObjectMapper objectMapper = new ObjectMapper();
+    public static final String JSON_DATA_SQL = "SQL";
+    public static final String JSON_DATA_NOSQL = "NOSQL";
+    public static final String JSON_DATA_FILE_SQL = "FILE";
 
     @Autowired
     LocalizationService localizationService;
 
     @Autowired
-    RuleRepository ruleRepository;
+    SQLRuleRepository SQLRuleRepository;
 
     @Autowired
-    ComponentRepository componentRepository;
+    SQLComponentRepository SQLComponentRepository;
+
+    @Autowired
+    NoSQLComponentRepository noSQLComponentRepository;
 
     @Value("#{${license}}")
     Map<String, String> licenseByUser;
@@ -57,15 +65,23 @@ public class DynamicScreenService {
     @Value("#{${language}}")
     Map<String, String> languageByUser;
 
-    @Value("#{${jsonDataInFile}}")
-    Boolean jsonDataInFile;
+    @Value("${jsonData}")
+    String jsonData;
 
     @Cacheable(value = "calculateScreenJson")
     public List<ComponentDTO> calculateScreenJson(String template, String user) {
         String license = getLicenseFromUser(user);
         String role = getRoleFromUser(user);
         Locale locale = getLocaleFromUser(user);
-        List<ComponentDTO> componentDTOList = jsonDataInFile ? readScreenDTOFromFile(template) : readScreenDTOFromDB(template);
+        List<ComponentDTO> componentDTOList = new ArrayList<>();
+        if (jsonData.equals(JSON_DATA_SQL)) {
+            componentDTOList = readScreenDTOFromSQLDB(template);
+        } else if (jsonData.equals(JSON_DATA_NOSQL)) {
+            componentDTOList = readScreenDTOFromNOSQLDB(template);
+        } else if (jsonData.equals(JSON_DATA_FILE_SQL)) {
+
+            componentDTOList = readScreenDTOFromFile(template);
+        }
         List<RuleEntity> ruleEntityList = new ArrayList<>();
         // Gather rules
         ruleEntityList.addAll(filterOutByPropertyRules(template, "license", license));
@@ -94,15 +110,22 @@ public class DynamicScreenService {
         return componentDTOList;
     }
 
-    private List<ComponentDTO> readScreenDTOFromDB(String template) {
+    private List<ComponentDTO> readScreenDTOFromSQLDB(String template) {
         ModelMapper modelMapper = new ModelMapper();
-        List<ComponentEntity> componentEntityList = componentRepository.findByTemplate(template);
+        List<ComponentEntity> componentEntityList = SQLComponentRepository.findByTemplate(template);
+        return modelMapper.map(componentEntityList, new TypeToken<List<ComponentDTO>>() {
+        }.getType());
+    }
+
+    private List<ComponentDTO> readScreenDTOFromNOSQLDB(String template) {
+        ModelMapper modelMapper = new ModelMapper();
+        List<ComponentDocument> componentEntityList = noSQLComponentRepository.findByTemplate(template);
         return modelMapper.map(componentEntityList, new TypeToken<List<ComponentDTO>>() {
         }.getType());
     }
 
     private List<RuleEntity> filterOutByPropertyRules(String template, String propertyName, String propertyValue) {
-        List<RuleEntity> ruleEntityList = ruleRepository.findByTemplateAndPropertyNameAndPropertyValue(template, propertyName, propertyValue);
+        List<RuleEntity> ruleEntityList = SQLRuleRepository.findByTemplateAndPropertyNameAndPropertyValue(template, propertyName, propertyValue);
         LOGGER.info(Utils.magenta("\nRules found: \n" + ruleEntityList.stream()
                 .map(r -> r.getComponentName() + "/" + (BooleanUtils.isTrue(r.getInclude()) ? "show" : "hide")).collect(Collectors.joining("\n"))));
         return ruleEntityList;

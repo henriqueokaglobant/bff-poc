@@ -1,0 +1,7 @@
+-- Only Components are allowed in NOSQL db
+
+docker exec -it bff-mongo mongosh --eval "db.component.find({})"
+
+docker exec -it bff-mongo mongosh --eval "db.component.insertOne({ \"template\": \"user_profile\", \"name\": \"newfield\",  \"titleKey\": \"@@newLabel@@\",  \"componentType\": \"input\"  })"
+
+docker exec -it bff-mongo mongosh --eval "db.component.insertOne({ \"template\": \"user_profile\", \"name\": \"newfield2\",  \"titleKey\": \"@@newLabel2@@\",  \"componentType\": \"input\"  })"

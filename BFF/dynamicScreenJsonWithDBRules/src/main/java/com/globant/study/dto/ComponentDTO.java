@@ -2,8 +2,7 @@ package com.globant.study.dto;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.globant.study.entity.ComponentEntity;
+import com.globant.study.sql.entity.ComponentEntity;
 
 import java.util.ArrayList;
 import java.util.HashMap;

@@ -5,6 +5,10 @@ To run this application:
 To run Postgres (or you can setup h2 db in the application.properties)
     docker run -d --name bff-postgres -p 5432:5432 -e POSTGRES_PASSWORD=your_password postgres
 
+To run MongoDB
+    docker run -d --name bff-mongo -p 27017:27017 -v ~/Documents/mongodb:/data/db mongo:latest
+
+
 Using the application:
 * If running the application locally, use the following property as this
     spring.datasource.url=jdbc:postgresql://localhost:5432/postgres
